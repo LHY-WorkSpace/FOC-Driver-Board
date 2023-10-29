@@ -2,7 +2,8 @@
 #include "AS5600.h"
 #include "stm32f10x.h"
 #include <stdio.h>
-
+#include <math.h>
+#include <string.h>
 
 
 // 72Mhz = 210Khz
@@ -12,7 +13,7 @@ static void EC_IIC_Delay(u16 nus)
 
 	for(k=0; k<nus; k++)
 	{
-		for(i=0; i<5; i++)
+		for(i=0; i<1; i++)
 		{
 			__NOP();
 		}
@@ -174,7 +175,7 @@ void AS5600_Init(void)
 //  说明: 
 //
 //************************//  
-u8 AS5600_WriteData(u8 addr,u8 length,u8 *data)
+void AS5600_WriteData(u8 addr,u8 length,u8 *data)
 {
 	u8 i;
 	EC_Start_IIC();
@@ -187,11 +188,10 @@ u8 AS5600_WriteData(u8 addr,u8 length,u8 *data)
 		EC_IIC_SenddByte(data[i]);
 		if(EC_IIC_Wait_Ack_OK() == D_FALSE)
 		{
-			return D_FALSE;
+			return ;
 		}
 	}
 	EC_IIC_Stop();
-	return D_TRUE;
 }
 
 
@@ -235,6 +235,51 @@ void AS5600_ReadData(u8 addr,u8 length,u8 *data)
 		}
 	}
 	EC_IIC_Stop();
+}
+
+
+
+//带圈数
+// 500us
+float AS5600_Angle(uint8_t Mode)
+{
+	static float TurnsNum =0.0;
+	static float PrvAngle =0.0;	
+	float Err;
+	float AS5600Angle;
+	float Result=0.0;
+	B16_B08 AngleReg;
+
+	memset(AngleReg.B08,0,sizeof(B16_B08));
+	AS5600_ReadData(RAW_ANGLE_L_REG,1,&AngleReg.B08[0]);
+	AS5600_ReadData(RAW_ANGLE_H_REG,1,&AngleReg.B08[1]);
+	AS5600Angle = (float)AngleReg.B16*360.0f/4096.0f;
+
+	Err = AS5600Angle - PrvAngle;
+
+	if(fabs(Err) > 360.0*0.8)
+	{
+		TurnsNum += (Err > 0.0) ? -1:1;
+	}
+
+	PrvAngle = AS5600Angle;
+
+	switch (Mode)
+	{
+		case ANGLE_MODE:
+			Result = AS5600Angle;
+			break;
+		case TURN_MODE:
+			Result = TurnsNum;
+			break;
+		case ANGLE_TURN_MODE:
+			Result = AS5600Angle + TurnsNum*360.0;
+			break;
+		default:
+			break;
+	}
+
+	return Result;
 }
 
 

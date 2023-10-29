@@ -5,14 +5,13 @@
 
 // Timer1-4
 
-
-
 #define MAX_VAL (1000) // 10 S
 
 static u32 Count;
 static u8 Time_Flag;
 
-void TIM3_Int_Init(u16 arr, u16 psc)
+// 10 ms
+void TIM3_Init(u16 arr, u16 psc)
 {
 	TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
 	NVIC_InitTypeDef NVIC_InitStructure;
@@ -20,8 +19,8 @@ void TIM3_Int_Init(u16 arr, u16 psc)
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM3, ENABLE);
 
 	// 定时器TIM3初始化
-	TIM_TimeBaseStructure.TIM_Period = arr;	
-	TIM_TimeBaseStructure.TIM_Prescaler = psc;
+	TIM_TimeBaseStructure.TIM_Period = arr *1000 - 1;// N ms
+	TIM_TimeBaseStructure.TIM_Prescaler = psc - 1;
 	TIM_TimeBaseStructure.TIM_ClockDivision = TIM_CKD_DIV1;
 	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
 	TIM_TimeBaseInit(TIM3, &TIM_TimeBaseStructure);
@@ -60,7 +59,6 @@ u8 Time_GetFlag(u8 Flag)
 		return RESET;
 	}
 }
-
 // 定时器3中断服务程序  10ms
 void TIM3_IRQHandler(void) // TIM3中断
 {
@@ -98,5 +96,7 @@ void TIM3_IRQHandler(void) // TIM3中断
 		{
 			Time_SetFlag(Flag_500ms);
 		}
+		
+		Count++;
 	}
 }
