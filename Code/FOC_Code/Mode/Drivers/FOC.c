@@ -43,7 +43,7 @@ void PWM_Init()
 	GPIO_Init(GPIOA,&PWM_IO);
 
 
-	TIM_TimeBaseInitsruc.TIM_Prescaler=36-1;
+	TIM_TimeBaseInitsruc.TIM_Prescaler=CLK_DIV-1;
 	TIM_TimeBaseInitsruc.TIM_CounterMode=TIM_CounterMode_Up;
 	TIM_TimeBaseInitsruc.TIM_Period=PWM_PERIOD-1;//ÖÜÆÚ
     TIM_TimeBaseInitsruc.TIM_ClockDivision = TIM_CKD_DIV1;
@@ -160,9 +160,9 @@ void P_Transform(float Ia, float Ib, float Ic)
 
 
 
-float G_P = 0.01;
-float G_I = 0.0;
-float G_D = 0.0;
+float G_P = 0.05;
+float G_I = 0.00003;
+float G_D = 0.2;
 float G_A = 0.0;
 
 void Foc_CTL()
@@ -185,9 +185,8 @@ void Foc_CTL()
         UqTmp = PID_Process(&PositionPID,Angle);
 
         printf("FOC:%.2f,%.2f\n",UqTmp,Angle);
-        N_Transform(_constrain(UqTmp,-6.0,6.0),0,angtmp);
-
         // N_Transform(_constrain(UqTmp,-6.0,6.0),0,angtmp);
+        N_Transform(UqTmp,0,angtmp);
             // N_Transform(0.01,0,10.0);
 
         // SVPWM_CTL(_constrain(UqTmp,-6.0,6.0),0,angtmp);
