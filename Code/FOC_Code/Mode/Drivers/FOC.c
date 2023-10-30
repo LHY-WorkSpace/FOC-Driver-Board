@@ -6,6 +6,7 @@
 #include "PID.h"
 #include <math.h>
 
+
 static PID_t PositionPID;
 static PID_t SpeedPID;
 static PID_t ForcePID;
@@ -171,7 +172,7 @@ void Foc_CTL()
     float angtmp;
     float UqTmp;   
 
-
+LED_ON;
         PID_Change_Kp(&PositionPID,G_P);
         PID_Change_Ki(&PositionPID,G_I);
         PID_Change_Kd(&PositionPID,G_D);
@@ -184,14 +185,14 @@ void Foc_CTL()
 
         UqTmp = PID_Process(&PositionPID,Angle);
 
-        printf("FOC:%.2f,%.2f\n",UqTmp,Angle);
+        // printf("FOC:%.2f,%.2f\n",UqTmp,Angle);
         // N_Transform(_constrain(UqTmp,-6.0,6.0),0,angtmp);
         N_Transform(UqTmp,0,angtmp);
             // N_Transform(0.01,0,10.0);
 
         // SVPWM_CTL(_constrain(UqTmp,-6.0,6.0),0,angtmp);
         FOC_TickTask();
-
+LED_OF;
 
 }
 void FOC_TickTask()
