@@ -1,7 +1,7 @@
 #ifndef FOC_H
 #define FOC_H
 
-//PWM周期 40khz ：= PWM_PERIOD(us)/72/CLK_DIV
+//PWM周期 40khz ：= PWM_PERIOD/72/CLK_DIV(us)
 // 建议不低于20khz，否则电机噪声大
 #define CLK_DIV         (18)
 #define PWM_PERIOD      (100)
