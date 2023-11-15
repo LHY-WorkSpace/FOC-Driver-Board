@@ -38,6 +38,41 @@ void TIM3_Init(u16 arr, u16 psc)
 	Time_Flag  = 0;
 }
 
+void Delay_Init()
+{
+    TIM_TimeBaseInitTypeDef TIM_TimeBaseInitStr;
+
+	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM4, ENABLE);
+		
+	TIM_TimeBaseStructure.TIM_Period = 0Xffff;
+	TIM_TimeBaseStructure.TIM_Prescaler = 72-1;//1us
+	TIM_TimeBaseStructure.TIM_ClockDivision = TIM_CKD_DIV1;
+	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
+	TIM_TimeBaseInit(TIM4, &TIM_TimeBaseStructure);
+    TIM_ARRPreloadConfig(TIM4,DISABLE);
+}
+
+void Delay_us(u16 nus)
+{
+    TIM4->CNT = 0;
+    TIM_Cmd(TIM4,ENABLE);
+    while (TIM4->CNT < nus);
+    TIM_Cmd(TIM4,DISABLE);
+}
+
+void Delay_ms(u16 nus)
+{
+    u16 i; 
+    for(i=0;i<nus;i++)
+    {
+        TIM4->CNT = 0;
+        TIM_Cmd(TIM4,ENABLE);
+        while (TIM4->CNT < 1000); 
+        TIM_Cmd(TIM4,DISABLE);
+    }
+}
+
+
 void Time_SetFlag(u8 Flag)
 {
 	Time_Flag |= (1 << Flag);

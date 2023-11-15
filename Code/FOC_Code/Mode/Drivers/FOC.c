@@ -5,12 +5,14 @@
 #include "AS5600.h"
 #include "PID.h"
 #include <math.h>
-
+#include "Timer.h"
 
 static PID_t PositionPID;
 static PID_t SpeedPID;
 static PID_t ForcePID;
 static float Ua,Ub,Uc;
+static u16  TIM_PeriodVal = 72*1000/CLK_DIV/PWM_FRQUENCE;
+
 
 #define SQRT_3      (1.7320508075f)//sqrt(3)/
 #define SQRT_3_2    (0.8660254037f)//sqrt(3)/2
@@ -36,68 +38,76 @@ void PWM_Init()
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM1,ENABLE);
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA,ENABLE);
 
-	GPIO_InitTypeDef PWM_IO;
-	TIM_TimeBaseInitTypeDef TIM_TimeBaseInitsruc;
-    TIM_OCInitTypeDef TIM_OCInit;
+  GPIO_InitTypeDef PWM_IO;
+  TIM_TimeBaseInitTypeDef TIM_TimeBaseInitsruc;
+  TIM_OCInitTypeDef TIM_OCInit;
 	
 	PWM_IO.GPIO_Pin = GPIO_Pin_8|GPIO_Pin_9|GPIO_Pin_10;	
 	PWM_IO.GPIO_Speed = GPIO_Speed_50MHz;
 	PWM_IO.GPIO_Mode = GPIO_Mode_AF_PP;
 	GPIO_Init(GPIOA,&PWM_IO);
+  
+  //  检查PWM分辨率是否足够，想保持PWM频率不变的情况下，
+  //  可以减小 CLK_DIV 的值来满足
+  //  保证是100的倍数
+  if( (TIM_PeriodVal%100) != 0)
+  {
+    while (1)
+    {
+      TIM_PeriodVal ++;
+    }
+  }
 
+  TIM_TimeBaseInitsruc.TIM_Prescaler= CLK_DIV-1;
+  TIM_TimeBaseInitsruc.TIM_CounterMode=TIM_CounterMode_Up;
+  TIM_TimeBaseInitsruc.TIM_Period=TIM_PeriodVal -  1;
+  TIM_TimeBaseInitsruc.TIM_ClockDivision = TIM_CKD_DIV1;
+  TIM_TimeBaseInitsruc.TIM_RepetitionCounter = 0;
+  TIM_TimeBaseInit(TIM1,&TIM_TimeBaseInitsruc);
 
-	TIM_TimeBaseInitsruc.TIM_Prescaler=CLK_DIV-1;
-	TIM_TimeBaseInitsruc.TIM_CounterMode=TIM_CounterMode_Up;
-	TIM_TimeBaseInitsruc.TIM_Period=PWM_PERIOD-1;//周期
-    TIM_TimeBaseInitsruc.TIM_ClockDivision = TIM_CKD_DIV1;
-    TIM_TimeBaseInitsruc.TIM_RepetitionCounter = 0;
-	TIM_TimeBaseInit(TIM1,&TIM_TimeBaseInitsruc);
-	
-    TIM_OCInit.TIM_OCMode = TIM_OCMode_PWM1;
-    TIM_OCInit.TIM_OutputState = TIM_OutputState_Enable;
-    TIM_OCInit.TIM_OutputNState = TIM_OutputNState_Disable;
-    TIM_OCInit.TIM_Pulse = 0;
-    TIM_OCInit.TIM_OCPolarity = TIM_OCPolarity_High;
-    TIM_OCInit.TIM_OCNPolarity = TIM_OCNPolarity_Low;
-    TIM_OCInit.TIM_OCIdleState = TIM_OCIdleState_Reset;
-    TIM_OCInit.TIM_OCNIdleState = TIM_OCNIdleState_Reset;
+  TIM_OCInit.TIM_OCMode = TIM_OCMode_PWM1;
+  TIM_OCInit.TIM_OutputState = TIM_OutputState_Enable;
+  TIM_OCInit.TIM_OutputNState = TIM_OutputNState_Disable;
+  TIM_OCInit.TIM_Pulse = 0;
+  TIM_OCInit.TIM_OCPolarity = TIM_OCPolarity_High;
+  TIM_OCInit.TIM_OCNPolarity = TIM_OCNPolarity_Low;
+  TIM_OCInit.TIM_OCIdleState = TIM_OCIdleState_Reset;
+  TIM_OCInit.TIM_OCNIdleState = TIM_OCNIdleState_Reset;
 
-    TIM_OC1Init(TIM1,&TIM_OCInit);
-    TIM_OC2Init(TIM1,&TIM_OCInit);
-    TIM_OC3Init(TIM1,&TIM_OCInit);
+  TIM_OC1Init(TIM1,&TIM_OCInit);
+  TIM_OC2Init(TIM1,&TIM_OCInit);
+  TIM_OC3Init(TIM1,&TIM_OCInit);
 
-    TIM_OC1FastConfig(TIM1,TIM_OCFast_Enable);
-    TIM_OC2FastConfig(TIM1,TIM_OCFast_Enable);
-    TIM_OC3FastConfig(TIM1,TIM_OCFast_Enable);
+  TIM_OC1FastConfig(TIM1,TIM_OCFast_Enable);
+  TIM_OC2FastConfig(TIM1,TIM_OCFast_Enable);
+  TIM_OC3FastConfig(TIM1,TIM_OCFast_Enable);
 
-    TIM_OC1PreloadConfig(TIM1, TIM_OCPreload_Enable);
-    TIM_OC2PreloadConfig(TIM1, TIM_OCPreload_Enable);
-    TIM_OC3PreloadConfig(TIM1, TIM_OCPreload_Enable);
+  TIM_OC1PreloadConfig(TIM1, TIM_OCPreload_Enable);
+  TIM_OC2PreloadConfig(TIM1, TIM_OCPreload_Enable);
+  TIM_OC3PreloadConfig(TIM1, TIM_OCPreload_Enable);
 
-    TIM_CtrlPWMOutputs(TIM1,ENABLE);
-    TIM_ARRPreloadConfig(TIM1,ENABLE);
-	TIM_Cmd(TIM1,ENABLE);
+  TIM_CtrlPWMOutputs(TIM1,ENABLE);
+  TIM_ARRPreloadConfig(TIM1,ENABLE);
+  TIM_Cmd(TIM1,ENABLE);
 
-    PID_Init(&PositionPID);
+  PID_Init(&PositionPID);
 
 }
 
-
 //设置占空比(%)
-// PluseWide = 10 = 10%
+// PluseWide = 10 : 10%
 void PWM_SetDuty(u8 Phase ,u8 PluseWide)
 {
-
     switch (Phase)
     {
         case UA_Phase:
-            TIM1->CCR1 = PWM_PERIOD/100*PluseWide-1;
+            TIM1->CCR1 = TIM_PeriodVal/100*PluseWide-1;
             break;
          case UB_Phase:
-            TIM1->CCR2 = PWM_PERIOD/100*PluseWide-1;
+            TIM1->CCR2 = TIM_PeriodVal/100*PluseWide-1;
             break;
         case UC_Phase:
-            TIM1->CCR3 = PWM_PERIOD/100*PluseWide-1;
+            TIM1->CCR3 = TIM_PeriodVal/100*PluseWide-1;
             break;       
         default:
             break;
@@ -121,94 +131,6 @@ float AngleLimit(float Input)
        Tmp += 360.0;
     }
     return Tmp;
-}
-
-//逆变换
-void N_Transform(float uq, float ud, float Angle)
-{
-    float Ualpha,Ubeta; 
-
-    Angle = AngleLimit(Angle);
-    //帕克逆变换
-    Ualpha = ud * FastCos(DEGTORAD(Angle)) - uq * FastSin(DEGTORAD(Angle)); 
-    Ubeta =  ud * FastSin(DEGTORAD(Angle)) + uq * FastCos(DEGTORAD(Angle)); 
-
-    // 克拉克逆变换
-    Ua = Ualpha + VCC_MOTOR/2;
-    Ub = (SQRT_3*Ubeta-Ualpha)/2 + VCC_MOTOR/2;
-    Uc = (-Ualpha-SQRT_3*Ubeta)/2 + VCC_MOTOR/2;
-
-    // PWM_SetDuty(UA_Phase,(uint8_t)(Ua*100/VCC_MOTOR));
-    // PWM_SetDuty(UB_Phase,(uint8_t)(Ub*100/VCC_MOTOR));
-    // PWM_SetDuty(UC_Phase,(uint8_t)(Uc*100/VCC_MOTOR));
-    //printf("Angle:%.2f Ia:%d Ib:%d Ic:%d\r\n",Angle,(uint8_t)(Ua*100/VCC_MOTOR),(uint8_t)(Ub*100/VCC_MOTOR),(uint8_t)(Uc*100/VCC_MOTOR));
-
-}
-
-void P_Transform(float Ia, float Ib, float Ic)
-{
-    // float iq,id; 
-    // float ialpha,ibeta;
-    // float Angle = 0.0;
-
-    // ialpha = Ia;
-    // ibeta = (1/sqrt(3))*Ia + (2/sqrt(3))*Ib;
-
-    // //// 帕克变换
-    // iq = ibeta  * FastCos(DEGTORAD(Angle)) - ialpha * FastSin(DEGTORAD(Angle));
-    // id = ialpha * FastCos(DEGTORAD(Angle)) + ibeta  * FastSin(DEGTORAD(Angle));
-
-}
-
-
-
-float G_P = 0.05;
-float G_I = 0.00003;
-float G_D = 0.2;
-float G_A = 0.0;
-
-void Foc_CTL()
-{
-	float Angle  = 1.0f;
-    float angtmp;
-    float UqTmp;   
-
-LED_ON;
-        PID_Change_Kp(&PositionPID,G_P);
-        PID_Change_Ki(&PositionPID,G_I);
-        PID_Change_Kd(&PositionPID,G_D);
-        PID_SetTarget(&PositionPID,G_A);
-        Angle = AS5600_Angle(ANGLE_TURN_MODE);
-        // printf("FOC:%f,%f,%f,%.2f,%.2f\n",G_P,G_I,G_D,G_A,Angle);
-        // angtmp = AngleLimit(Angle);     
-        angtmp = ElectricalAngle(Angle,POLE_PAIR);
-        angtmp = AngleLimit(angtmp);
-
-        UqTmp = PID_Process(&PositionPID,Angle);
-
-        // printf("FOC:%.2f,%.2f\n",UqTmp,Angle);
-        // N_Transform(ValueLimit(UqTmp,-6.0,6.0),0,angtmp);
-        N_Transform(UqTmp,0,angtmp);
-            // N_Transform(0.01,0,10.0);
-
-        // SVPWM_CTL(ValueLimit(UqTmp,-6.0,6.0),0,angtmp);
-        FOC_TickTask();
-LED_OF;
-
-}
-void FOC_TickTask()
-{
-
-    PWM_SetDuty(UA_Phase,(uint8_t)(Ua*100/VCC_MOTOR));
-    PWM_SetDuty(UB_Phase,(uint8_t)(Ub*100/VCC_MOTOR));
-    PWM_SetDuty(UC_Phase,(uint8_t)(Uc*100/VCC_MOTOR));
-
-    // PWM_SetDuty(UA_Phase,sssss);
-    // PWM_SetDuty(UB_Phase,sssss);
-    // PWM_SetDuty(UC_Phase,sssss);
-
-    // printf("FOC:%.2f,%.2f,%.2f\n",(Ua*100/VCC_MOTOR),(Ub*100/VCC_MOTOR),(Uc*100/VCC_MOTOR));
-
 }
 
 // =========================================================================================================================
@@ -302,25 +224,19 @@ void SIN_CTL(float Uq,float Ud, float angle_el)
 {
     float Ua,Ub,Uc;
     float Ualpha,Ubeta;
-
-    // 正弦PWM调制
-    // 逆派克+克拉克变换
+    float SinVal,CosVal;
 
     // 在0到360°之间的角度归一化
     // 只有在使用 _sin和 _cos 近似函数时才需要
     angle_el = AngleLimit(angle_el);
+    // 正弦PWM调制
+    // 逆派克+克拉克变换
+    SinVal = FastSin(DEGTORAD(angle_el));
+    CosVal = FastCos(DEGTORAD(angle_el));
 
-     // 逆派克变换
-    if( Ud == 0.0)
-    {
-      Ualpha =  -FastSin(DEGTORAD(angle_el)) * Uq;  // -sin(angle) * Uq;
-      Ubeta  =   FastCos(DEGTORAD(angle_el)) * Uq;    //  cos(angle) * Uq;
-    }
-    else
-    {
-      Ualpha = Ud * FastCos(DEGTORAD(angle_el)) - Uq * FastSin(DEGTORAD(angle_el)); 
-      Ubeta =  Ud * FastSin(DEGTORAD(angle_el)) + Uq * FastCos(DEGTORAD(angle_el)); 
-    }
+    // 逆派克变
+    Ualpha = Ud * CosVal - Uq * SinVal; 
+    Ubeta =  Ud * SinVal + Uq * CosVal; 
 
     // 克拉克变换
     Ua = Ualpha + VCC_MOTOR/2;
@@ -411,6 +327,33 @@ void SVPWM_CTL(float Uq, float Ud,float angle_el)
 }
 
 
+
+// float G_P = 0.05;
+// float G_I = 0.00003;
+// float G_D = 0.2;
+// float G_A = 0.0;
+float UqVal = 1.0;
+u16 DelayTime = 5;
+float angtmp = 0.0f;
+void Foc_CTL()
+{
+      // PID_Change_Kp(&PositionPID,G_P);
+      // PID_Change_Ki(&PositionPID,G_I);
+      // PID_Change_Kd(&PositionPID,G_D);
+      // PID_SetTarget(&PositionPID,G_A);
+      // Angle = AS5600_Angle(ANGLE_TURN_MODE);
+  
+      angtmp = AngleLimit(angtmp+5.0f);  
+      // UqTmp = PID_Process(&PositionPID,Angle);
+
+      SIN_CTL(UqVal,0,ElectricalAngle(angtmp,POLE_PAIR));
+      Delay_ms(DelayTime);
+      // SVPWM_CTL(ValueLimit(UqTmp,-6.0,6.0),0,angtmp);
+}
+
+
+
+
 void Speed_CTL()
 {
   float BBBB[10];
@@ -419,25 +362,13 @@ void Speed_CTL()
   float avg = 0.0f;
 
   LED_ON;
-  for ( i = 0; i < sizeof(AAAA); i++)
+  for ( i = 0; i < 10; i++)
   {
       AAAA = FastSin(DEGTORAD(avg++));
   }
-  for ( i = 0; i < sizeof(AAAA); i++)
+  for ( i = 0; i < 10; i++)
   {
       BBBB = FastCos(DEGTORAD(avg++));
-  }
-  LED_OF;
-
-
-  LED_ON;
-  for ( i = 0; i < sizeof(AAAA); i++)
-  {
-      AAAA = _sin(DEGTORAD(avg++));
-  }
-  for ( i = 0; i < sizeof(AAAA); i++)
-  {
-      BBBB = _cos(DEGTORAD(avg++));
   }
   LED_OF;
 

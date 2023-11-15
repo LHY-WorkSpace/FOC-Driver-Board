@@ -18,4 +18,10 @@ void Time_SetFlag( u8 Flag);
 void Time_ResetFlag( u8 Flag);
 u8 Time_GetFlag( u8 Flag);
 void Time_SetAllFlag(u8 Type);
+
+void Delay_Init(void);
+void Delay_us(u16 nus);
+void Delay_ms(u16 nus);
+
+
 #endif

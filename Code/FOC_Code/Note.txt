@@ -1,0 +1,44 @@
+
+
+
+
+//逆变换
+void N_Transform(float uq, float ud, float Angle)
+{
+    float Ualpha,Ubeta; 
+
+    Angle = AngleLimit(Angle);
+    //帕克逆变换
+    Ualpha = ud * FastCos(DEGTORAD(Angle)) - uq * FastSin(DEGTORAD(Angle)); 
+    Ubeta =  ud * FastSin(DEGTORAD(Angle)) + uq * FastCos(DEGTORAD(Angle)); 
+
+    // 克拉克逆变换
+    Ua = Ualpha + VCC_MOTOR/2;
+    Ub = (SQRT_3*Ubeta-Ualpha)/2 + VCC_MOTOR/2;
+    Uc = (-Ualpha-SQRT_3*Ubeta)/2 + VCC_MOTOR/2;
+
+    // PWM_SetDuty(UA_Phase,(uint8_t)(Ua*100/VCC_MOTOR));
+    // PWM_SetDuty(UB_Phase,(uint8_t)(Ub*100/VCC_MOTOR));
+    // PWM_SetDuty(UC_Phase,(uint8_t)(Uc*100/VCC_MOTOR));
+    //printf("Angle:%.2f Ia:%d Ib:%d Ic:%d\r\n",Angle,(uint8_t)(Ua*100/VCC_MOTOR),(uint8_t)(Ub*100/VCC_MOTOR),(uint8_t)(Uc*100/VCC_MOTOR));
+
+}
+
+void P_Transform(float Ia, float Ib, float Ic)
+{
+    // float iq,id; 
+    // float ialpha,ibeta;
+    // float Angle = 0.0;
+
+    // ialpha = Ia;
+    // ibeta = (1/sqrt(3))*Ia + (2/sqrt(3))*Ib;
+
+    // //// 帕克变换
+    // iq = ibeta  * FastCos(DEGTORAD(Angle)) - ialpha * FastSin(DEGTORAD(Angle));
+    // id = ialpha * FastCos(DEGTORAD(Angle)) + ibeta  * FastSin(DEGTORAD(Angle));
+
+}
+
+
+
+

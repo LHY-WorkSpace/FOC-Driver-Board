@@ -10,17 +10,11 @@
 
 
 
-
-
-
-  float Angle  = 1.0f;
 int main(void)
 {
-
-  // u8 flag;
-
   LED_Init();
   TIM3_Init(10,72);
+  Delay_Init();
   AS5600_Init();
   PWM_Init();
   USART1_Init(115200);
