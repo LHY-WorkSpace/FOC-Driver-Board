@@ -94,8 +94,9 @@ void PWM_Init()
 
 }
 
-//设置占空比(%)
+// 设置占空比(%)
 // PluseWide = 10 : 10%
+// 效果不对时，可调整 Ux和CCRx的对应关系
 void PWM_SetDuty(u8 Phase ,u8 PluseWide)
 {
     switch (Phase)
@@ -328,10 +329,11 @@ void SVPWM_CTL(float Uq, float Ud,float angle_el)
 
 void FocOpenLoop_Speed(float Speed)
 {
+  float UqVal = 1.0;
   static float angtmp = 0.0f;
   angtmp = AngleLimit(angtmp+Speed);  
   SIN_CTL(UqVal,0,ElectricalAngle(angtmp,POLE_PAIR));
-  Delay_ms(2);
+  Delay_ms(5);
 }
 
 void FocCloseLoop_Position(float Target)
@@ -342,46 +344,45 @@ void FocCloseLoop_Position(float Target)
   float DIR = 1.0;
 
   Angle = AS5600_Angle(ANGLE_TURN_MODE);
-
+  printf("FOC:%.1f,%.1f\n",Target,Angle);
   angtmp = AngleLimit(Angle);
-  Angle =  ValueLimit(0.1*(Target-DIR*Angle),-2.0,2.0);
+  Angle =  ValueLimit(0.133*(Target-DIR*Angle),-2.0,2.0);
 
   UqTmp = ElectricalAngle(angtmp,POLE_PAIR)*DIR;
   UqTmp = AngleLimit(UqTmp);
 
   SIN_CTL(Angle,0,UqTmp);
-  Delay_ms(5);
+  // Delay_ms(2);
 }
 
-
-
+float Tarang=0.0f;
 void Foc_CTL()
 {
-  FocCloseLoop_Position(50.0);
-  FocOpenLoop_Speed(3);
+  FocCloseLoop_Position(Tarang);
+  // FocOpenLoop_Speed(Tarang);
 }
 
 
 
-void Speed_CTL()
-{
-  float BBBB[10];
-  float AAAA[10];
-  u8 i;
-  float avg = 0.0f;
+// void Speed_CTL()
+// {
+//   float BBBB[10];
+//   float AAAA[10];
+//   u8 i;
+//   float avg = 0.0f;
 
-  LED_ON;
-  for ( i = 0; i < 10; i++)
-  {
-      AAAA[i] = FastSin(DEGTORAD(avg++));
-  }
-  for ( i = 0; i < 10; i++)
-  {
-      BBBB[i] = FastCos(DEGTORAD(avg++));
-  }
-  LED_OF;
+//   LED_ON;
+//   for ( i = 0; i < 10; i++)
+//   {
+//       AAAA[i] = FastSin(DEGTORAD(avg++));
+//   }
+//   for ( i = 0; i < 10; i++)
+//   {
+//       BBBB[i] = FastCos(DEGTORAD(avg++));
+//   }
+//   LED_OF;
 
-}
+// }
 
 
 

@@ -145,7 +145,7 @@ static u8 EE_IIC_GetByte(void)
 void EEPROM_Init(void)
 {
 	GPIO_InitTypeDef GPIO_Initstructure;
-	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB,ENABLE);
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA,ENABLE);
 	
 	EE_IIC_SCL_HIGH;
 	EE_IIC_SDA_HIGH;//÷√Œ™◊‹œﬂø’œ–
@@ -153,7 +153,7 @@ void EEPROM_Init(void)
 	GPIO_Initstructure.GPIO_Pin = GPIO_Pin_6|GPIO_Pin_7;	
 	GPIO_Initstructure.GPIO_Speed = GPIO_Speed_10MHz;
 	GPIO_Initstructure.GPIO_Mode = GPIO_Mode_Out_OD;
-	GPIO_Init(GPIOB,&GPIO_Initstructure);
+	GPIO_Init(GPIOA,&GPIO_Initstructure);
 
 }
 

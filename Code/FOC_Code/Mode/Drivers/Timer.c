@@ -44,11 +44,11 @@ void Delay_Init()
 
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM4, ENABLE);
 		
-	TIM_TimeBaseStructure.TIM_Period = 0Xffff;
-	TIM_TimeBaseStructure.TIM_Prescaler = 72-1;//1us
-	TIM_TimeBaseStructure.TIM_ClockDivision = TIM_CKD_DIV1;
-	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
-	TIM_TimeBaseInit(TIM4, &TIM_TimeBaseStructure);
+	TIM_TimeBaseInitStr.TIM_Period = 0Xffff;
+	TIM_TimeBaseInitStr.TIM_Prescaler = 72-1;//1us
+	TIM_TimeBaseInitStr.TIM_ClockDivision = TIM_CKD_DIV1;
+	TIM_TimeBaseInitStr.TIM_CounterMode = TIM_CounterMode_Up;
+	TIM_TimeBaseInit(TIM4, &TIM_TimeBaseInitStr);
     TIM_ARRPreloadConfig(TIM4,DISABLE);
 }
 
