@@ -19,7 +19,7 @@ static u16  TIM_PeriodVal = 72*1000/CLK_DIV/PWM_FRQUENCE;
 #define LED_ON  GPIO_ResetBits(GPIOB,GPIO_Pin_9)
 #define LED_OF  GPIO_SetBits(GPIOB,GPIO_Pin_9)
 #define ValueLimit(Val,Min,Max) ((Val)<(Min)?(Min):((Val)>(Max)?(Max):(Val)))
-
+static PID_t PositionPID;
 void LED_Init()
 {
 
@@ -253,7 +253,7 @@ void SIN_CTL(float Uq,float Ud, float angle_el)
 void SVPWM_CTL(float Uq, float Ud,float angle_el) 
 {
     float Uout;
-
+    float Ua,Ub,Uc;
      if(Ud)
       { 
         Uout = _sqrt(Ud*Ud + Uq*Uq) / VCC_MOTOR;
@@ -318,13 +318,13 @@ void SVPWM_CTL(float Uq, float Ud,float angle_el)
       }
 
     // 计算相电压和中心
-    // Ua = Ta*VCC_MOTOR;
-    // Ub = Tb*VCC_MOTOR;
-    // Uc = Tc*VCC_MOTOR;
+    Ua = Ta*VCC_MOTOR;
+    Ub = Tb*VCC_MOTOR;
+    Uc = Tc*VCC_MOTOR;
 
-    PWM_SetDuty(UA_Phase,(uint8_t)(Ta*100/VCC_MOTOR));
-    PWM_SetDuty(UB_Phase,(uint8_t)(Tb*100/VCC_MOTOR));
-    PWM_SetDuty(UC_Phase,(uint8_t)(Tc*100/VCC_MOTOR));
+    PWM_SetDuty(UA_Phase,(uint8_t)(Ua*100/VCC_MOTOR));
+    PWM_SetDuty(UB_Phase,(uint8_t)(Ub*100/VCC_MOTOR));
+    PWM_SetDuty(UC_Phase,(uint8_t)(Uc*100/VCC_MOTOR));
 }
 
 void FocOpenLoop_Speed(float Speed)
@@ -336,6 +336,11 @@ void FocOpenLoop_Speed(float Speed)
   Delay_ms(5);
 }
 
+float G_P = 0.02;
+float G_I = 0.0;
+float G_A = 0.0;
+float G_D = 0.0;
+float MAX = 2.0;
 void FocCloseLoop_Position(float Target)
 {
   float angtmp = 0.0f;
@@ -343,15 +348,29 @@ void FocCloseLoop_Position(float Target)
   float UqTmp;
   float DIR = 1.0;
 
-  Angle = AS5600_Angle(ANGLE_TURN_MODE);
-  printf("FOC:%.1f,%.1f\n",Target,Angle);
-  angtmp = AngleLimit(Angle);
-  Angle =  ValueLimit(0.133*(Target-DIR*Angle),-2.0,2.0);
 
+    PID_Change_Kp(&PositionPID,G_P);
+    PID_Change_Ki(&PositionPID,G_I);
+    PID_Change_Kd(&PositionPID,G_D);
+    PID_SetTarget(&PositionPID,G_A);
+
+
+
+
+  Angle = AS5600_Angle(ANGLE_TURN_MODE);
+  printf("FOC:%.1f,%.1f\n",G_A,Angle);
+  angtmp = AngleLimit(Angle);
+
+  Angle = PID_Process(&PositionPID,Angle);
+
+
+  Angle =  ValueLimit(Angle,-MAX,MAX);
+  // Angle =  ValueLimit(0.133*(Target-DIR*Angle),-2.0,2.0);
   UqTmp = ElectricalAngle(angtmp,POLE_PAIR)*DIR;
   UqTmp = AngleLimit(UqTmp);
 
-  SIN_CTL(Angle,0,UqTmp);
+  // SIN_CTL(Angle,0,UqTmp);
+  SVPWM_CTL(Angle,0,UqTmp);
   // Delay_ms(2);
 }
 
