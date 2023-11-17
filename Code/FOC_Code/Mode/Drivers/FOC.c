@@ -326,31 +326,40 @@ void SVPWM_CTL(float Uq, float Ud,float angle_el)
     PWM_SetDuty(UC_Phase,(uint8_t)(Tc*100/VCC_MOTOR));
 }
 
-
-
-// float G_P = 0.05;
-// float G_I = 0.00003;
-// float G_D = 0.2;
-// float G_A = 0.0;
-float UqVal = 1.0;
-u16 DelayTime = 5;
-float angtmp = 0.0f;
-void Foc_CTL()
+void FocOpenLoop_Speed(float Speed)
 {
-      // PID_Change_Kp(&PositionPID,G_P);
-      // PID_Change_Ki(&PositionPID,G_I);
-      // PID_Change_Kd(&PositionPID,G_D);
-      // PID_SetTarget(&PositionPID,G_A);
-      // Angle = AS5600_Angle(ANGLE_TURN_MODE);
-  
-      angtmp = AngleLimit(angtmp+5.0f);  
-      // UqTmp = PID_Process(&PositionPID,Angle);
-
-      SIN_CTL(UqVal,0,ElectricalAngle(angtmp,POLE_PAIR));
-      Delay_ms(DelayTime);
-      // SVPWM_CTL(ValueLimit(UqTmp,-6.0,6.0),0,angtmp);
+  static float angtmp = 0.0f;
+  angtmp = AngleLimit(angtmp+Speed);  
+  SIN_CTL(UqVal,0,ElectricalAngle(angtmp,POLE_PAIR));
+  Delay_ms(2);
 }
 
+void FocCloseLoop_Position(float Target)
+{
+  float angtmp = 0.0f;
+  float Angle = 0.0f;  
+  float UqTmp;
+  float DIR = 1.0;
+
+  Angle = AS5600_Angle(ANGLE_TURN_MODE);
+
+  angtmp = AngleLimit(Angle);
+  Angle =  ValueLimit(0.1*(Target-DIR*Angle),-2.0,2.0);
+
+  UqTmp = ElectricalAngle(angtmp,POLE_PAIR)*DIR;
+  UqTmp = AngleLimit(UqTmp);
+
+  SIN_CTL(Angle,0,UqTmp);
+  Delay_ms(5);
+}
+
+
+
+void Foc_CTL()
+{
+  FocCloseLoop_Position(50.0);
+  FocOpenLoop_Speed(3);
+}
 
 
 
@@ -364,11 +373,11 @@ void Speed_CTL()
   LED_ON;
   for ( i = 0; i < 10; i++)
   {
-      AAAA = FastSin(DEGTORAD(avg++));
+      AAAA[i] = FastSin(DEGTORAD(avg++));
   }
   for ( i = 0; i < 10; i++)
   {
-      BBBB = FastCos(DEGTORAD(avg++));
+      BBBB[i] = FastCos(DEGTORAD(avg++));
   }
   LED_OF;
 
