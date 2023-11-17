@@ -24,11 +24,12 @@ del *.htm /s
 del *.uvoptx /s
 del *.23712 /s
 del *.scvd /s
+del *.dbgconf /s
+del *.lst /s
+del *.sct /s
+del *.opt /s  ::不允许删除JLINK的设置
+del *.hex /s
 
-::del *.lst /s
-::del *.sct /s
-::del *.opt /s  ::不允许删除JLINK的设置
-::del *.hex /s
 exit
 ::pause
 :: 为注释

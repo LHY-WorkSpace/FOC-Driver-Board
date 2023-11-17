@@ -17,7 +17,7 @@ int main(void)
   Delay_Init();
   AS5600_Init();
   PWM_Init();
-  USART1_Init(115200);
+  USART1_Init(460800);
 
   while (1)
   {
