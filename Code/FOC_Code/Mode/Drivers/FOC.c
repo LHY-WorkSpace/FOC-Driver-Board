@@ -37,8 +37,10 @@ void PWM_Init()
 {
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_TIM1,ENABLE);
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA,ENABLE);
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB,ENABLE);
 
   GPIO_InitTypeDef PWM_IO;
+	GPIO_InitTypeDef PWM_EN;
   TIM_TimeBaseInitTypeDef TIM_TimeBaseInitsruc;
   TIM_OCInitTypeDef TIM_OCInit;
 	
@@ -47,6 +49,11 @@ void PWM_Init()
 	PWM_IO.GPIO_Mode = GPIO_Mode_AF_PP;
 	GPIO_Init(GPIOA,&PWM_IO);
   
+	PWM_EN.GPIO_Pin = GPIO_Pin_12;	
+	PWM_EN.GPIO_Speed = GPIO_Speed_10MHz;
+	PWM_EN.GPIO_Mode = GPIO_Mode_Out_PP;
+	GPIO_Init(GPIOB,&PWM_EN);
+
   //  检查PWM分辨率是否足够，想保持PWM频率不变的情况下，
   //  可以减小 CLK_DIV 的值来满足
   //  保证是100的倍数
@@ -89,7 +96,7 @@ void PWM_Init()
   TIM_CtrlPWMOutputs(TIM1,ENABLE);
   TIM_ARRPreloadConfig(TIM1,ENABLE);
   TIM_Cmd(TIM1,ENABLE);
-
+  FOC_ENABLE;
   PID_Init(&PositionPID);
 
 }
@@ -102,13 +109,13 @@ void PWM_SetDuty(u8 Phase ,u8 PluseWide)
     switch (Phase)
     {
         case UA_Phase:
-            TIM1->CCR1 = TIM_PeriodVal/100*PluseWide-1;
+            TIM1->CCR3 = TIM_PeriodVal/100*PluseWide-1;
             break;
          case UB_Phase:
-            TIM1->CCR2 = TIM_PeriodVal/100*PluseWide-1;
+            TIM1->CCR1 = TIM_PeriodVal/100*PluseWide-1;
             break;
         case UC_Phase:
-            TIM1->CCR3 = TIM_PeriodVal/100*PluseWide-1;
+            TIM1->CCR2 = TIM_PeriodVal/100*PluseWide-1;
             break;       
         default:
             break;
@@ -336,9 +343,9 @@ void FocOpenLoop_Speed(float Speed)
   Delay_ms(5);
 }
 
-float G_P = 0.02;
+float G_P = 0.03;
 float G_I = 0.0;
-float G_A = 0.0;
+float Tarang = 0.0;
 float G_D = 0.0;
 float MAX = 2.0;
 void FocCloseLoop_Position(float Target)
@@ -352,29 +359,28 @@ void FocCloseLoop_Position(float Target)
     PID_Change_Kp(&PositionPID,G_P);
     PID_Change_Ki(&PositionPID,G_I);
     PID_Change_Kd(&PositionPID,G_D);
-    PID_SetTarget(&PositionPID,G_A);
+    PID_SetTarget(&PositionPID,Target);
 
 
 
 
   Angle = AS5600_Angle(ANGLE_TURN_MODE);
-  printf("FOC:%.1f,%.1f\n",G_A,Angle);
+  printf("FOC:%.1f,%.1f\n",Target,Angle);
   angtmp = AngleLimit(Angle);
 
   Angle = PID_Process(&PositionPID,Angle);
 
 
   Angle =  ValueLimit(Angle,-MAX,MAX);
-  // Angle =  ValueLimit(0.133*(Target-DIR*Angle),-2.0,2.0);
   UqTmp = ElectricalAngle(angtmp,POLE_PAIR)*DIR;
   UqTmp = AngleLimit(UqTmp);
 
-  // SIN_CTL(Angle,0,UqTmp);
-  SVPWM_CTL(Angle,0,UqTmp);
+  SIN_CTL(Angle,0,UqTmp);
+  // SVPWM_CTL(Angle,0,UqTmp);
   // Delay_ms(2);
 }
 
-float Tarang=0.0f;
+
 void Foc_CTL()
 {
   FocCloseLoop_Position(Tarang);

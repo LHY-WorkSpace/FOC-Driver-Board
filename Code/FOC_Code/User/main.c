@@ -21,14 +21,8 @@ int main(void)
 
   while (1)
   {
-    // if(Time_GetFlag(Flag_50ms) == SET)
-    // {
-    //   Foc_CTL();
-    //   // FOC_TickTask();
-
-    //   Time_ResetFlag(Flag_50ms);
     Foc_CTL();
-    }
+  }
 
 
 }

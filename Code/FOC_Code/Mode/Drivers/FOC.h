@@ -9,6 +9,10 @@
 //×î´óµçÑ¹
 #define VCC_MOTOR	(12.0f)
 
+#define FOC_DISABLE     GPIO_ResetBits(GPIOB,GPIO_Pin_12)
+#define FOC_ENABLE      GPIO_SetBits(GPIOB,GPIO_Pin_12)
+
+
 typedef enum
 {
     UA_Phase,
