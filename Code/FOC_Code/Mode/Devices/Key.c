@@ -346,13 +346,12 @@ void Key_IO_Init()
 {
 
 	GPIO_InitTypeDef GPIO_Initstructure;
-	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB,ENABLE);
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA,ENABLE);
 	
-	GPIO_Initstructure.GPIO_Pin = GPIO_Pin_9;	
+	GPIO_Initstructure.GPIO_Pin = GPIO_Pin_0|GPIO_Pin_1|GPIO_Pin_2|GPIO_Pin_3;	
 	GPIO_Initstructure.GPIO_Speed = GPIO_Speed_10MHz;
-	GPIO_Initstructure.GPIO_Mode = GPIO_Mode_Out_PP;
-	GPIO_Init(GPIOB,&GPIO_Initstructure);
-
+	GPIO_Initstructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
+	GPIO_Init(GPIOA,&GPIO_Initstructure);
 }
 
 
@@ -360,13 +359,7 @@ void Key_IO_Init()
 
 void Key_Init()
 {
-    // rcu_periph_clock_enable(RCU_GPIOE);
-
-    // gpio_mode_set(GPIOE, GPIO_MODE_INPUT, GPIO_PUPD_NONE, GPIO_PIN_2);
-    // gpio_mode_set(GPIOE, GPIO_MODE_INPUT, GPIO_PUPD_NONE, GPIO_PIN_3);
-    // gpio_mode_set(GPIOE, GPIO_MODE_INPUT, GPIO_PUPD_NONE, GPIO_PIN_4);
-    // gpio_mode_set(GPIOE, GPIO_MODE_INPUT, GPIO_PUPD_NONE, GPIO_PIN_5);
-
+	Key_IO_Init();
 
     Button_init(&Button_Up,read_button_GPIO,RESET,Key_Up);
     Button_init(&Button_Down,read_button_GPIO,RESET,Key_Down);

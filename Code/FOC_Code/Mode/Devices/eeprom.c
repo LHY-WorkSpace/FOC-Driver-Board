@@ -2,7 +2,8 @@
 #include "eeprom.h"
 #include "stm32f10x.h"
 
-
+// SCL - PB0
+// SDA - PB1
 //72Mhz = 133khz
 static void EE_IIC_Delay(u16 nus)
 {
@@ -145,15 +146,15 @@ static u8 EE_IIC_GetByte(void)
 void EEPROM_Init(void)
 {
 	GPIO_InitTypeDef GPIO_Initstructure;
-	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA,ENABLE);
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB,ENABLE);
 	
 	EE_IIC_SCL_HIGH;
 	EE_IIC_SDA_HIGH;//÷√Œ™◊‹œﬂø’œ–
 
-	GPIO_Initstructure.GPIO_Pin = GPIO_Pin_6|GPIO_Pin_7;	
+	GPIO_Initstructure.GPIO_Pin = GPIO_Pin_0|GPIO_Pin_1;	
 	GPIO_Initstructure.GPIO_Speed = GPIO_Speed_10MHz;
 	GPIO_Initstructure.GPIO_Mode = GPIO_Mode_Out_OD;
-	GPIO_Init(GPIOA,&GPIO_Initstructure);
+	GPIO_Init(GPIOB,&GPIO_Initstructure);
 
 }
 

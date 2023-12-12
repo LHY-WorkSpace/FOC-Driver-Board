@@ -5,10 +5,10 @@
 #include "string.h"
 
 
-#define KEY_LEFT        GPIO_ReadInputDataBit(GPIOB,GPIO_Pin_10)
-#define KEY_DOWN        GPIO_ReadInputDataBit(GPIOB,GPIO_Pin_10)
-#define KEY_UP          GPIO_ReadInputDataBit(GPIOB,GPIO_Pin_10)
-#define KEY_RIGHT       GPIO_ReadInputDataBit(GPIOB,GPIO_Pin_10)
+#define KEY_LEFT        GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_2)
+#define KEY_DOWN        GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_1)
+#define KEY_UP          GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_0)
+#define KEY_RIGHT       GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_3)
 
 
 //According to your need to modify the constants.

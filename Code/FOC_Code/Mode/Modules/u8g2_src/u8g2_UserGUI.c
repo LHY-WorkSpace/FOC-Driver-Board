@@ -75,11 +75,41 @@ GUI_t GUI_Info =
 
 };
 
-
+// PA5-SPI_CLK 
+// PA4-SPI_RST 
+// PA6-SPI_DC 
+// PA7-SPI_MOSI
 
 void OLED_Init()
 {
+	GPIO_InitTypeDef SPI_GPIO_Init;
+    SPI_InitTypeDef SPI_InitDef;
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_SPI1,ENABLE);
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA,ENABLE);
 
+	SPI_GPIO_Init.GPIO_Pin = GPIO_Pin_5|GPIO_Pin_7;
+	SPI_GPIO_Init.GPIO_Speed = GPIO_Speed_50MHz;
+	SPI_GPIO_Init.GPIO_Mode = GPIO_Mode_AF_PP;
+	GPIO_Init(GPIOA,&SPI_GPIO_Init);
+
+	SPI_GPIO_Init.GPIO_Pin = GPIO_Pin_4|GPIO_Pin_6;
+	SPI_GPIO_Init.GPIO_Speed = GPIO_Speed_50MHz;
+	SPI_GPIO_Init.GPIO_Mode = GPIO_Mode_Out_PP;
+	GPIO_Init(GPIOA,&SPI_GPIO_Init);
+
+    SPI_InitDef.SPI_Direction = SPI_Direction_1Line_Tx;
+    SPI_InitDef.SPI_Mode = SPI_Mode_Master;
+    SPI_InitDef.SPI_DataSize = SPI_DataSize_8b;
+    SPI_InitDef.SPI_CPOL = SPI_CPOL_High;
+    SPI_InitDef.SPI_CPHA = SPI_CPHA_2Edge;
+    SPI_InitDef.SPI_NSS = SPI_NSS_Soft;
+    SPI_InitDef.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_16;
+    SPI_InitDef.SPI_FirstBit = SPI_FirstBit_MSB;
+    SPI_InitDef.SPI_CRCPolynomial = 7
+
+    SPI_Init(SPI1,&SPI_InitDef);
+
+    SPI_Cmd(SPI1,ENABLE);
 }
 
 //***************************************************//

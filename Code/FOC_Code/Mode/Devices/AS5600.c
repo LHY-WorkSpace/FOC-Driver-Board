@@ -5,7 +5,8 @@
 #include <math.h>
 #include <string.h>
 
-
+// SCL - PB11
+// SDA - PB10
 // 72Mhz = 210Khz
 static void EC_IIC_Delay(u16 nus)
 {

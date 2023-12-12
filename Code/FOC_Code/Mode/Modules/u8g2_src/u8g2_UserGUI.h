@@ -10,11 +10,14 @@
 
 #define  OLED_TYPE  SH1106
 
-
-#define  OLED_RST_OFF   GPIO_SetBits(GPIOB,GPIO_Pin_14)	              //复位关
-#define  OLED_RST_ON    GPIO_ResetBits(GPIOB,GPIO_Pin_14)	          //复位开
-#define  OLED_DATA      GPIO_SetBits(GPIOB,GPIO_Pin_12)	              //数据
-#define  OLED_CMD       GPIO_ResetBits(GPIOB,GPIO_Pin_12)	          //命令
+// PA5-SPI_CLK 
+// PA4-SPI_RST 
+// PA6-SPI_DC 
+// PA7-SPI_MOSI
+#define  OLED_RST_OFF   GPIO_SetBits(GPIOA,GPIO_Pin_4)	              //复位关
+#define  OLED_RST_ON    GPIO_ResetBits(GPIOA,GPIO_Pin_4)	          //复位开
+#define  OLED_DATA      GPIO_SetBits(GPIOA,GPIO_Pin_6)	              //数据
+#define  OLED_CMD       GPIO_ResetBits(GPIOA,GPIO_Pin_6)	          //命令
 
 
 
