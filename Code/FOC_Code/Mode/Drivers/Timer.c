@@ -2,6 +2,7 @@
 #include "Timer.h"
 #include "DataType.h"
 #include "stm32f10x.h"
+#include "Key.h"
 
 // Timer1-4
 
@@ -100,6 +101,8 @@ void TIM3_IRQHandler(void) // TIM3ÖÐ¶Ï
 	if (TIM_GetITStatus(TIM3, TIM_IT_Update) != RESET)
 	{
 		TIM_ClearITPendingBit(TIM3, TIM_IT_Update);
+
+		button_ticks();
 
 		if (Count >= MAX_VAL)
 		{

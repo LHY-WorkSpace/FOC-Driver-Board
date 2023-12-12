@@ -10,7 +10,6 @@
 static PID_t PositionPID;
 static PID_t SpeedPID;
 static PID_t ForcePID;
-static float Ua,Ub,Uc;
 static u16  TIM_PeriodVal = 72*1000/CLK_DIV/PWM_FRQUENCE;
 
 
@@ -95,8 +94,8 @@ void PWM_Init()
 
   TIM_CtrlPWMOutputs(TIM1,ENABLE);
   TIM_ARRPreloadConfig(TIM1,ENABLE);
-  TIM_Cmd(TIM1,ENABLE);
   FOC_ENABLE;
+  TIM_Cmd(TIM1,ENABLE);
   PID_Init(&PositionPID);
 
 }
@@ -387,27 +386,6 @@ void Foc_CTL()
   // FocOpenLoop_Speed(Tarang);
 }
 
-
-
-// void Speed_CTL()
-// {
-//   float BBBB[10];
-//   float AAAA[10];
-//   u8 i;
-//   float avg = 0.0f;
-
-//   LED_ON;
-//   for ( i = 0; i < 10; i++)
-//   {
-//       AAAA[i] = FastSin(DEGTORAD(avg++));
-//   }
-//   for ( i = 0; i < 10; i++)
-//   {
-//       BBBB[i] = FastCos(DEGTORAD(avg++));
-//   }
-//   LED_OF;
-
-// }
 
 
 
