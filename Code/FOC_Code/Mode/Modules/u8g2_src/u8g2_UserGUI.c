@@ -2,11 +2,13 @@
 #include "DataType.h"
 #include "stm32f10x.h"
 #include "Timer.h"
+#include "transform_3D.h"
+#include "ADC.h"
 static u8g2_t u8g2_Data;
 
 
 u8 flag=0;
-static unsigned char FreeRTOS_Logo[] =
+static u8 FreeRTOS_Logo[] =
 {
 0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,
 0X00,0X00,0XFF,0XFF,0XFF,0X05,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,
@@ -103,9 +105,9 @@ void OLED_Init()
     SPI_InitDef.SPI_CPOL = SPI_CPOL_High;
     SPI_InitDef.SPI_CPHA = SPI_CPHA_2Edge;
     SPI_InitDef.SPI_NSS = SPI_NSS_Soft;
-    SPI_InitDef.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_16;
+    SPI_InitDef.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_4;
     SPI_InitDef.SPI_FirstBit = SPI_FirstBit_MSB;
-    SPI_InitDef.SPI_CRCPolynomial = 7
+    SPI_InitDef.SPI_CRCPolynomial = 7;
 
     SPI_Init(SPI1,&SPI_InitDef);
 
@@ -228,61 +230,198 @@ void Power_On()
     static uint8_t x=1,y=0,z=0;
     static uint8_t px=1,py=0;
 
-    if(x <= 31)
-    {
-        u8g2_DrawHLine(&u8g2_Data,62-x*2,31,(x+1)*4);
-        u8g2_DrawHLine(&u8g2_Data,62-x*2,32,(x+1)*4);
-        x++;
-    }
-    else
-    {
-        px = 63*FastCos(DEGTORAD(y));
-        py = 31*FastSin(DEGTORAD(y));
+    // if(x <= 31)
+    // {
+    //     u8g2_DrawHLine(&u8g2_Data,62-x*2,31,(x+1)*4);
+    //     u8g2_DrawHLine(&u8g2_Data,62-x*2,32,(x+1)*4);
+    //     x++;
+    // }
+    // else
+    // {
+    //     px = 63*FastCos(DEGTORAD(y));
+    //     py = 31*FastSin(DEGTORAD(y));
 
-        if(y<90)
-        {
-            y++;
-            u8g2_DrawLine(&u8g2_Data,63,31,63-px,31+py);
-            u8g2_DrawLine(&u8g2_Data,63,31,63-px,31-py);
-            u8g2_DrawLine(&u8g2_Data,63,31,63+px,31+py);
-            u8g2_DrawLine(&u8g2_Data,63,31,63+px,31-py);
-        }
-        else
-        {
-            if(z<63)
-            {
-                z++;
-                u8g2_DrawVLine(&u8g2_Data,63-z,0,63);
-                u8g2_DrawVLine(&u8g2_Data,64+z,0,63);
+    //     if(y<90)
+    //     {
+    //         y++;
+    //         u8g2_DrawVLine(&u8g2_Data,&u8g2_Data,63,31,63-px,31+py);
+    //         u8g2_DrawVLine(&u8g2_Data,&u8g2_Data,63,31,63-px,31-py);
+    //         u8g2_DrawVLine(&u8g2_Data,&u8g2_Data,63,31,63+px,31+py);
+    //         u8g2_DrawVLine(&u8g2_Data,&u8g2_Data,63,31,63+px,31-py);
+    //     }
+    //     else
+    //     {
+    //         if(z<63)
+    //         {
+    //             z++;
+    //             u8g2_DrawVLine(&u8g2_Data,63-z,0,63);
+    //             u8g2_DrawVLine(&u8g2_Data,64+z,0,63);
 
-                if( z > 11 )
-                {
-                    u8g2_SetFont(&u8g2_Data, u8g2_font_streamline_design_t);
-                    u8g2_DrawGlyph(&u8g2_Data,51,84-z,0x011F);
-                }
-            }
-            else
-            {
-                x=1;
-                y=0;
-                z=0;
-                GUI_Info.Index = Main_ui;
-            }
-        }
-    }
+    //             if( z > 11 )
+    //             {
+    //                 u8g2_SetFont(&u8g2_Data, u8g2_font_streamline_design_t);
+    //                 u8g2_DrawGlyph(&u8g2_Data,51,84-z,0x011F);
+    //             }
+    //         }
+    //         else
+    //         {
+    //             x=1;
+    //             y=0;
+    //             z=0;
+    //             GUI_Info.Index = Main_ui;
+    //         }
+    //     }
+    // }
+}
+
+
+#define  SIZE  6
+// _3D Cube[SIZE]=
+// {
+//     {0,0,0},
+//     {8,0,0},
+//     {0,8,0},
+//     {8,8,0},
+    
+//     {0,0,8},
+//     {8,0,8},
+//     {0,8,8},
+//     {8,8,8}
+// };
+_3D Cube[SIZE]=
+{
+    {0,6,0},
+    {6,6,0},
+    {6,6,6},
+    {0,6,6},
+    
+    {3,12,3},
+    {3,0,3},
+};
+
+/***************************************
+函数: OrtProject
+功能: 正射投影(Orthographic projection)
+***************************************/
+_2D OrtProject(_3D  Space)
+{
+    _2D  Screen;
+    //---------------
+    Screen.x = (int)Space.x;
+    Screen.y = (int)Space.y;
+    //---------------
+    return Screen;
 }
 
 
 
+//基于透视投影的标准模型
+#define FOCAL_DISTANCE 128 //视点到视平面的距离
+int  XOrigin;
+int  YOrigin;
+/***************************************
+函数: PerProject
+功能: 透视投影(Perspective projection)
+说明: 1.又称为中心投影法
+      2.XOrigin,YOrigin为投影后的图形中心的屏幕坐标
+***************************************/
+_2D PerProject(_3D  Space)
+{
+    _2D  Screen;
+    //-------------------
+    if(Space.z==0)Space.z=1; //被除数不能为零
+    Screen.x = (int)( FOCAL_DISTANCE * Space.x / (Space.z + FOCAL_DISTANCE) ) + XOrigin;
+    Screen.y = (int)( FOCAL_DISTANCE * Space.y / (Space.z + FOCAL_DISTANCE) ) + YOrigin;
+    //-------------------
+    return Screen;
+}
+
+void RotateCube2( float ax, float ay, float az )
+{
+    float  gmat[4][4];
+    u8  i;
+    _3D  temp;
+    _2D  Cube_Dis[SIZE];
+    // _2D  Triangle_Dis[3];
+    //---------------------
+    Identity_3D(gmat);			//单位矩阵化
+    Translate_3D(gmat,-3,-3,-3);
+    Scale_3D(gmat,6,6,6);
+    Rotate_3D(gmat,ax,ay,az);
+    Translate_3D(gmat,0,0,25);
+    //---------------------
+    XOrigin = 64;
+    YOrigin = 18;
+
+    //---------------------
+    for(i=0;i<SIZE;i++)
+    {
+        temp = VEC_MultMatrix(Cube[i],gmat);
+        Cube_Dis[i] = PerProject(temp);
+    }
+
+    //---------------------
+    // u8g2_DrawLine(&u8g2_Data,Cube_Dis[0].x,Cube_Dis[0].y,Cube_Dis[1].x,Cube_Dis[1].y);
+    // u8g2_DrawLine(&u8g2_Data,Cube_Dis[0].x,Cube_Dis[0].y,Cube_Dis[2].x,Cube_Dis[2].y);
+    // u8g2_DrawLine(&u8g2_Data,Cube_Dis[3].x,Cube_Dis[3].y,Cube_Dis[1].x,Cube_Dis[1].y);
+    // u8g2_DrawLine(&u8g2_Data,Cube_Dis[3].x,Cube_Dis[3].y,Cube_Dis[2].x,Cube_Dis[2].y);
+    // //------------------------------------------
+    // u8g2_DrawLine(&u8g2_Data,Cube_Dis[0+4].x,Cube_Dis[0+4].y,Cube_Dis[1+4].x,Cube_Dis[1+4].y);
+    // u8g2_DrawLine(&u8g2_Data,Cube_Dis[0+4].x,Cube_Dis[0+4].y,Cube_Dis[2+4].x,Cube_Dis[2+4].y);
+    // u8g2_DrawLine(&u8g2_Data,Cube_Dis[3+4].x,Cube_Dis[3+4].y,Cube_Dis[1+4].x,Cube_Dis[1+4].y);
+    // u8g2_DrawLine(&u8g2_Data,Cube_Dis[3+4].x,Cube_Dis[3+4].y,Cube_Dis[2+4].x,Cube_Dis[2+4].y);
+    // //------------------------------------------
+    // u8g2_DrawLine(&u8g2_Data,Cube_Dis[0].x,Cube_Dis[0].y,Cube_Dis[0+4].x,Cube_Dis[0+4].y);
+    // u8g2_DrawLine(&u8g2_Data,Cube_Dis[1].x,Cube_Dis[1].y,Cube_Dis[1+4].x,Cube_Dis[1+4].y);
+    // u8g2_DrawLine(&u8g2_Data,Cube_Dis[2].x,Cube_Dis[2].y,Cube_Dis[2+4].x,Cube_Dis[2+4].y);
+    // u8g2_DrawLine(&u8g2_Data,Cube_Dis[3].x,Cube_Dis[3].y,Cube_Dis[3+4].x,Cube_Dis[3+4].y);
+
+
+    u8g2_DrawLine(&u8g2_Data,Cube_Dis[0].x,Cube_Dis[0].y,Cube_Dis[1].x,Cube_Dis[1].y);
+    u8g2_DrawLine(&u8g2_Data,Cube_Dis[1].x,Cube_Dis[1].y,Cube_Dis[2].x,Cube_Dis[2].y);
+    u8g2_DrawLine(&u8g2_Data,Cube_Dis[2].x,Cube_Dis[2].y,Cube_Dis[3].x,Cube_Dis[3].y);
+    u8g2_DrawLine(&u8g2_Data,Cube_Dis[3].x,Cube_Dis[3].y,Cube_Dis[0].x,Cube_Dis[0].y);
+    //------------------------------------------
+    u8g2_DrawLine(&u8g2_Data,Cube_Dis[4].x,Cube_Dis[4].y,Cube_Dis[0].x,Cube_Dis[0].y);
+    u8g2_DrawLine(&u8g2_Data,Cube_Dis[4].x,Cube_Dis[4].y,Cube_Dis[1].x,Cube_Dis[1].y);
+    u8g2_DrawLine(&u8g2_Data,Cube_Dis[4].x,Cube_Dis[4].y,Cube_Dis[2].x,Cube_Dis[2].y);
+    u8g2_DrawLine(&u8g2_Data,Cube_Dis[4].x,Cube_Dis[4].y,Cube_Dis[3].x,Cube_Dis[3].y);
+    // //------------------------------------------
+    u8g2_DrawLine(&u8g2_Data,Cube_Dis[5].x,Cube_Dis[5].y,Cube_Dis[0].x,Cube_Dis[0].y);
+    u8g2_DrawLine(&u8g2_Data,Cube_Dis[5].x,Cube_Dis[5].y,Cube_Dis[1].x,Cube_Dis[1].y);
+    u8g2_DrawLine(&u8g2_Data,Cube_Dis[5].x,Cube_Dis[5].y,Cube_Dis[2].x,Cube_Dis[2].y);
+    u8g2_DrawLine(&u8g2_Data,Cube_Dis[5].x,Cube_Dis[5].y,Cube_Dis[3].x,Cube_Dis[3].y);
+
+}
+
+float turn;
 void u8g2_Task()
 {
     u8g2_ClearBuffer(&u8g2_Data);
 
-    GUI_Info.KeyInfo = GetKeyState();
+    // GUI_Info.KeyInfo = GetKeyState();
 
-    GUI_Info.UI_List[GUI_Info.Index]();
+    // GUI_Info.UI_List[GUI_Info.Index]();
 
     u8g2_DrawFrame(&u8g2_Data,0,0,128,64);
+
+    RotateCube2(0,turn,0);
+
+    turn+=1;    
+    if(turn>=360)
+        turn=0;
+
+        if(turn<=180)
+        {
+            Cube[4].y = 6+turn/30;
+            Cube[5].y = 6-turn/30;
+        }
+        else
+        {
+            Cube[4].y = 12-(turn-180)/30;
+            Cube[5].y = (turn-180)/30;
+        }
+        Delay_ms(5);
 
     u8g2_SendBuffer(&u8g2_Data);
 }

@@ -8,7 +8,7 @@
 #define  SSD1306    (1)
 #define  SH1106     (2)
 
-#define  OLED_TYPE  SH1106
+#define  OLED_TYPE  SSD1306
 
 // PA5-SPI_CLK 
 // PA4-SPI_RST 

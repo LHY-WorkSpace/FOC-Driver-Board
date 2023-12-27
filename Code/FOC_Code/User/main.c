@@ -5,7 +5,7 @@
 #include "Timer.h"
 #include "AS5600.h"
 #include "u8g2_UserGUI.h"
-
+#include "ADC.h"
 
 
 
@@ -22,6 +22,7 @@ int main(void)
   PWM_Init();
   USART1_Init(460800);
   u8g2_Init();
+  // AD_Init();
 
   while (1)
   {
