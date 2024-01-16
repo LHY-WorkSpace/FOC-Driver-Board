@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "*.cpp": "cpp",
+        "transform_3d.h": "c",
+        "stdio.h": "c"
+    }
+}

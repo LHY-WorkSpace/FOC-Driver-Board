@@ -6,7 +6,7 @@
 #include "AS5600.h"
 #include "u8g2_UserGUI.h"
 #include "ADC.h"
-
+#include "WS2812.h"
 
 
 
@@ -22,12 +22,17 @@ int main(void)
   PWM_Init();
   USART1_Init(460800);
   u8g2_Init();
+  WS2812_Init();
   // AD_Init();
 
   while (1)
   {
-    Foc_CTL();
-    u8g2_Task();
+    // Foc_CTL();
+    // u8g2_Task();
+      Delay_ms(10);
+      WS2812_SetColor(0x80,0x10,0x01,0);
+      RGB_SendToLED();
+
   }
 
 

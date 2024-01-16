@@ -60,9 +60,28 @@ static u8 FreeRTOS_Logo[] =
 0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,
 };
 
+const u8 NumCode[][16]=
+{
+    {0x00,0x00,0x00,0x18,0x24,0x42,0x42,0x42,0x42,0x42,0x42,0x42,0x24,0x18,0x00,0x00},/*"0",0*/
 
+    {0x00,0x00,0x00,0x08,0x0E,0x08,0x08,0x08,0x08,0x08,0x08,0x08,0x08,0x3E,0x00,0x00},/*"1",1*/
 
+    {0x00,0x00,0x00,0x3C,0x42,0x42,0x42,0x20,0x20,0x10,0x08,0x04,0x42,0x7E,0x00,0x00},/*"2",2*/
 
+    {0x00,0x00,0x00,0x3C,0x42,0x42,0x20,0x18,0x20,0x40,0x40,0x42,0x22,0x1C,0x00,0x00},/*"3",3*/
+
+    {0x00,0x00,0x00,0x20,0x30,0x28,0x24,0x24,0x22,0x22,0x7E,0x20,0x20,0x78,0x00,0x00},/*"4",4*/
+
+    {0x00,0x00,0x00,0x7E,0x02,0x02,0x02,0x1A,0x26,0x40,0x40,0x42,0x22,0x1C,0x00,0x00},/*"5",5*/
+
+    {0x00,0x00,0x00,0x38,0x24,0x02,0x02,0x1A,0x26,0x42,0x42,0x42,0x24,0x18,0x00,0x00},/*"6",6*/
+
+    {0x00,0x00,0x00,0x00,0x7E,0x22,0x22,0x10,0x10,0x08,0x08,0x08,0x08,0x08,0x08,0x00},/*"7",7*/
+
+    {0x00,0x00,0x00,0x00,0x3C,0x42,0x42,0x42,0x24,0x18,0x24,0x42,0x42,0x42,0x3C,0x00},/*"8",8*/
+
+    {0x00,0x00,0x00,0x00,0x18,0x24,0x42,0x42,0x42,0x64,0x58,0x40,0x40,0x24,0x1C,0x00},/*"9",9*/
+};
 
 
 void Power_On(void);
@@ -227,8 +246,8 @@ void Mov(u16 x,u16 y)
 
 void Power_On()
 {
-    static uint8_t x=1,y=0,z=0;
-    static uint8_t px=1,py=0;
+    // static uint8_t x=1,y=0,z=0;
+    // static uint8_t px=1,py=0;
 
     // if(x <= 31)
     // {
@@ -317,8 +336,8 @@ _2D OrtProject(_3D  Space)
 
 //基于透视投影的标准模型
 #define FOCAL_DISTANCE 128 //视点到视平面的距离
-int  XOrigin;
-int  YOrigin;
+int  XOrigin = 63;
+int  YOrigin = 33;
 /***************************************
 函数: PerProject
 功能: 透视投影(Perspective projection)
@@ -336,6 +355,7 @@ _2D PerProject(_3D  Space)
     return Screen;
 }
 
+
 void RotateCube2( float ax, float ay, float az )
 {
     float  gmat[4][4];
@@ -346,13 +366,10 @@ void RotateCube2( float ax, float ay, float az )
     //---------------------
     Identity_3D(gmat);			//单位矩阵化
     Translate_3D(gmat,-3,-3,-3);
-    Scale_3D(gmat,6,6,6);
+    Scale_3D(gmat,4,4,4);
     Rotate_3D(gmat,ax,ay,az);
-    Translate_3D(gmat,0,0,25);
+    Translate_3D(gmat,0,0,40);
     //---------------------
-    XOrigin = 64;
-    YOrigin = 18;
-
     //---------------------
     for(i=0;i<SIZE;i++)
     {
@@ -395,6 +412,7 @@ void RotateCube2( float ax, float ay, float az )
 }
 
 float turn;
+u8 ops = 0;
 void u8g2_Task()
 {
     u8g2_ClearBuffer(&u8g2_Data);
@@ -404,13 +422,32 @@ void u8g2_Task()
     // GUI_Info.UI_List[GUI_Info.Index]();
 
     u8g2_DrawFrame(&u8g2_Data,0,0,128,64);
-
+    u8g2_DrawCircle(&u8g2_Data,63,42,20,U8G2_DRAW_ALL);
     RotateCube2(0,turn,0);
+    u8g2_SetFont(&u8g2_Data, u8g2_font_cu12_t_symbols);
+    // u8g2_DrawUTF8(&u8g2_Data,10,10,"Preface");
+    ops = 16;
+    if(ops <= 16)
+    {
+        u8g2_DrawGlyph(&u8g2_Data,10,ops,0x50);
+        u8g2_DrawGlyph(&u8g2_Data,23,ops,0x72);
+        u8g2_DrawGlyph(&u8g2_Data,32,ops,0x65);
+        u8g2_DrawGlyph(&u8g2_Data,42,ops,0x66);
+        u8g2_DrawGlyph(&u8g2_Data,52,ops,0x61);
+        u8g2_DrawGlyph(&u8g2_Data,62,ops,0x63);
+        u8g2_DrawGlyph(&u8g2_Data,72,ops,0x65);
+        // ops++;
+    }
+    else
+    {
+        ops = 0xff;
+    }
 
     turn+=1;    
     if(turn>=360)
         turn=0;
-
+    if(flag == 0)
+    {
         if(turn<=180)
         {
             Cube[4].y = 6+turn/30;
@@ -418,9 +455,12 @@ void u8g2_Task()
         }
         else
         {
-            Cube[4].y = 12-(turn-180)/30;
-            Cube[5].y = (turn-180)/30;
+            // Cube[4].y = 12-(turn-180)/30;
+            // Cube[5].y = (turn-180)/30;
+            flag = 1;
         }
+    }
+
         Delay_ms(5);
 
     u8g2_SendBuffer(&u8g2_Data);

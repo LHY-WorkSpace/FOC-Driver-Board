@@ -132,23 +132,29 @@ void Rotate_3D( float mat[4][4], float ax, float ay, float az )
     float  xmat[4][4];
     float  ymat[4][4];
     float  zmat[4][4];
-    //---------------------
-    ax = (3.1415926*ax)/180.0; //角度量转换为弧度量
-    ay = (3.1415926*ay)/180.0; //角度量转换为弧度量
-    az = (3.1415926*az)/180.0; //角度量转换为弧度量
+
+    float SinX = FastSin(DEGTORAD(ax));
+    float CosX = FastCos(DEGTORAD(ax));
+
+    float SinY = FastSin(DEGTORAD(ay));
+    float CosY = FastCos(DEGTORAD(ay));
+
+    float SinZ = FastSin(DEGTORAD(az));
+    float CosZ = FastCos(DEGTORAD(az));
+
     //---------------------
     xmat[0][0]=1;        xmat[0][1]=0;        xmat[0][2]=0;        xmat[0][3]=0;
-    xmat[1][0]=0;        xmat[1][1]=FastCos(ax);  xmat[1][2]=FastSin(ax);  xmat[1][3]=0;
-    xmat[2][0]=0;        xmat[2][1]=-FastSin(ax); xmat[2][2]=FastCos(ax);  xmat[2][3]=0;
+    xmat[1][0]=0;        xmat[1][1]=CosX;     xmat[1][2]=SinX;     xmat[1][3]=0;
+    xmat[2][0]=0;        xmat[2][1]=-SinX;    xmat[2][2]=CosX;     xmat[2][3]=0;
     xmat[3][0]=0;        xmat[3][1]=0;        xmat[3][2]=0;        xmat[3][3]=1;
     
-    ymat[0][0]=FastCos(ay);  ymat[0][1]=0;        ymat[0][2]=-FastSin(ay); ymat[0][3]=0;
-    ymat[1][0]=0;        ymat[1][1]=1;        ymat[1][2]=0;        ymat[1][3]=0;
-    ymat[2][0]=FastSin(ay);  ymat[2][1]=0;        ymat[2][2]=FastCos(ay);  ymat[2][3]=0;
-    ymat[3][0]=0;        ymat[3][1]=0;        ymat[3][2]=0;        ymat[3][3]=1;
+    ymat[0][0]=CosY;     ymat[0][1]=0;        ymat[0][2]=-SinY;     ymat[0][3]=0;
+    ymat[1][0]=0;        ymat[1][1]=1;        ymat[1][2]=0;         ymat[1][3]=0;
+    ymat[2][0]=SinY;     ymat[2][1]=0;        ymat[2][2]=CosY;      ymat[2][3]=0;
+    ymat[3][0]=0;        ymat[3][1]=0;        ymat[3][2]=0;         ymat[3][3]=1;
     
-    zmat[0][0]=FastCos(az);  zmat[0][1]=FastSin(az);  zmat[0][2]=0;        zmat[0][3]=0;
-    zmat[1][0]=-FastSin(az); zmat[1][1]=FastCos(az);  zmat[1][2]=0;        zmat[1][3]=0;
+    zmat[0][0]=CosZ;     zmat[0][1]=SinZ;     zmat[0][2]=0;        zmat[0][3]=0;
+    zmat[1][0]=-SinZ;    zmat[1][1]=CosZ;     zmat[1][2]=0;        zmat[1][3]=0;
     zmat[2][0]=0;        zmat[2][1]=0;        zmat[2][2]=1;        zmat[2][3]=0;
     zmat[3][0]=0;        zmat[3][1]=0;        zmat[3][2]=0;        zmat[3][3]=1;
     //---------------------

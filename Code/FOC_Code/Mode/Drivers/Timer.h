@@ -22,6 +22,6 @@ void Time_SetAllFlag(u8 Type);
 void Delay_Init(void);
 void Delay_us(u16 nus);
 void Delay_ms(u16 nus);
-
+u32 Time_GetInterval(u32 *LastTick);
 
 #endif

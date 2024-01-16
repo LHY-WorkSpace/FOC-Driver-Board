@@ -95,6 +95,28 @@ u8 Time_GetFlag(u8 Flag)
 		return RESET;
 	}
 }
+
+
+// 获取调用间隔
+// LastTick必须为 static 类型
+u32 Time_GetInterval(u32 *LastTick)
+{
+	u32 Interval = 0;
+	if(Count < *LastTick)
+	{
+		Interval = 0xFFFFFFFF - *LastTick + Count;
+	}
+	else
+	{
+		Interval = Count - *LastTick;
+	}
+
+	*LastTick = Count;
+
+	return Interval;
+}
+
+
 // 定时器3中断服务程序  10ms
 void TIM3_IRQHandler(void) // TIM3中断
 {
