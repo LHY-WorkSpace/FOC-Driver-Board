@@ -570,6 +570,11 @@
               <FileType>1</FileType>
               <FilePath>..\Mode\Drivers\ADC.c</FilePath>
             </File>
+            <File>
+              <FileName>LED.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Mode\Drivers\LED.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -594,6 +599,16 @@
               <FileName>WS2812.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Mode\Devices\WS2812.c</FilePath>
+            </File>
+            <File>
+              <FileName>MorseCode.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Mode\Devices\MorseCode.c</FilePath>
+            </File>
+            <File>
+              <FileName>AsciiCode.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Mode\Devices\AsciiCode.c</FilePath>
             </File>
           </Files>
         </Group>

@@ -3,91 +3,93 @@
 #include "stm32f10x.h"
 
 
+// 多的1个为复位帧
+static u16 DispBuff[24*(WS2812_NUM+1)];
 
-static u8 DispBuff[24*WS2812_NUM];
+const u16 Code0 = 24;
+const u16 Code1 = 66;
 
-const u8 Code0 = 0x0C;
-const u8 Code1 = 0xC0;
+static u8 ComplateFlag = 1;
 
-
-
-
-
-
-// PB15   SPI2_MOSI
-void DMA_FunInit()
-{
-	
-	u8 i;
-	DMA_InitTypeDef DMA_InitType;
-	NVIC_InitTypeDef NVIC_InitStructure;
-
-	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA1,ENABLE);
-
-	DMA_ClearITPendingBit(DMA1_IT_GL5);
-
-	NVIC_InitStructure.NVIC_IRQChannel = DMA1_Channel5_IRQn;
-	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 5;
-	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
-	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;	
-	NVIC_Init(&NVIC_InitStructure);
-
-	DMA_InitType.DMA_PeripheralBaseAddr = (u32)&(SPI2->DR); 
-	DMA_InitType.DMA_MemoryBaseAddr = (u32)&DispBuff;     
-	DMA_InitType.DMA_DIR = DMA_DIR_PeripheralDST;                
-	DMA_InitType.DMA_BufferSize = 24*WS2812_NUM;         
-	DMA_InitType.DMA_PeripheralInc = DMA_PeripheralInc_Disable ;      
-	DMA_InitType.DMA_MemoryInc = DMA_MemoryInc_Enable ;          
-	DMA_InitType.DMA_PeripheralDataSize = DMA_PeripheralDataSize_Byte; 
-	DMA_InitType.DMA_MemoryDataSize = DMA_MemoryDataSize_Byte ;     
-	DMA_InitType.DMA_Mode = DMA_Mode_Normal;               
-	DMA_InitType.DMA_Priority = DMA_Priority_High;           
-	DMA_InitType.DMA_M2M = DMA_M2M_Disable;                
-	DMA_Init(DMA1_Channel5,&DMA_InitType);
-	DMA_Cmd(DMA1_Channel5,DISABLE);
-	DMA_ITConfig(DMA1_Channel5,DMA_IT_TC,ENABLE);
+static u16 TotalData = 0;
 
 
-	for ( i = 0; i < 24*WS2812_NUM; i++)
-	{
-		DispBuff[i] = 0x00;
-	}
-}
-
+// PA2  TIM2_CH3
 void  WS2812_Init(void)
 {
+	u16 i;
+	TIM_TimeBaseInitTypeDef          TIM_TimeBaseStructure;
+	TIM_OCInitTypeDef                TIM_OCInitStructure;
+	GPIO_InitTypeDef                 GPIO_InitStructure;
+	DMA_InitTypeDef                  DMA_InitStructure;
+	NVIC_InitTypeDef 				 NVIC_Initstr;
 
-	GPIO_InitTypeDef SPI_GPIO_Init;
-    SPI_InitTypeDef SPI_InitDef;
-	RCC_APB1PeriphClockCmd(RCC_APB1Periph_SPI2,ENABLE);
-	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB,ENABLE);
 
-	SPI_GPIO_Init.GPIO_Pin = GPIO_Pin_15;
-	SPI_GPIO_Init.GPIO_Speed = GPIO_Speed_50MHz;
-	SPI_GPIO_Init.GPIO_Mode = GPIO_Mode_AF_PP;//WS2812为5v,此处外接上拉至5V,故开漏方式
-	GPIO_Init(GPIOB,&SPI_GPIO_Init);
+	//clock
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);
+	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE);
+	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA1, ENABLE);
+	
+	//GPIO
+	GPIO_InitStructure.GPIO_Pin    = GPIO_Pin_2;
+	GPIO_InitStructure.GPIO_Mode   = GPIO_Mode_AF_PP;
+	GPIO_InitStructure.GPIO_Speed  = GPIO_Speed_50MHz;
+	GPIO_Init(GPIOA, &GPIO_InitStructure);	
+	
+	//TIME
+	TIM_TimeBaseStructure.TIM_Period = 90-1; // 800kHZ  72/80=800KHZ
+	TIM_TimeBaseStructure.TIM_Prescaler = 0;
+	TIM_TimeBaseStructure.TIM_ClockDivision = 0;
+	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
+	TIM_TimeBaseInit(TIM2, &TIM_TimeBaseStructure);
+	
+	//PWM
+	TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM1;
+	TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
+	TIM_OCInitStructure.TIM_OutputNState=TIM_OutputNState_Disable;//高级定时器这句一定要配
+	TIM_OCInitStructure.TIM_Pulse = 0; //CCRX寄存器值
+	TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High;
+	TIM_OC3Init(TIM2, &TIM_OCInitStructure);
+	TIM_CtrlPWMOutputs(TIM2,ENABLE);
+	TIM_OC3PreloadConfig(TIM2,TIM_OCPreload_Enable);//使能预加载值，这句一定要配,不然时序会乱
+	TIM_ARRPreloadConfig(TIM2,ENABLE);
 
-    SPI_InitDef.SPI_Direction = SPI_Direction_1Line_Tx;
-    SPI_InitDef.SPI_Mode = SPI_Mode_Master;
-    SPI_InitDef.SPI_DataSize = SPI_DataSize_8b;
-    SPI_InitDef.SPI_CPOL = SPI_CPOL_High;
-    SPI_InitDef.SPI_CPHA = SPI_CPHA_2Edge;
-    SPI_InitDef.SPI_NSS = SPI_NSS_Soft;
-    SPI_InitDef.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_4;
-    SPI_InitDef.SPI_FirstBit = SPI_FirstBit_MSB;
-    SPI_InitDef.SPI_CRCPolynomial = 7;
 
-    SPI_Init(SPI2,&SPI_InitDef);
-	SPI_I2S_ClearITPendingBit(SPI2,SPI_I2S_IT_TXE);
-    SPI_Cmd(SPI2,ENABLE);
-	SPI_I2S_DMACmd(SPI2,SPI_I2S_DMAReq_Tx,ENABLE);
-	DMA_FunInit();
+	NVIC_Initstr.NVIC_IRQChannel=DMA1_Channel2_IRQn;
+	NVIC_Initstr.NVIC_IRQChannelPreemptionPriority=4;
+	NVIC_Initstr.NVIC_IRQChannelSubPriority=0;
+	NVIC_Initstr.NVIC_IRQChannelCmd=ENABLE;
+	NVIC_Init(&NVIC_Initstr);
+
+	//DMA
+	// DMA_DeInit(DMA1_Channel2);
+	DMA_InitStructure.DMA_PeripheralBaseAddr = (u32)&(TIM2->CCR3);//设置CCR值
+	DMA_InitStructure.DMA_MemoryBaseAddr = (u32)&DispBuff;	//存放CCR值的数组
+	DMA_InitStructure.DMA_DIR = DMA_DIR_PeripheralDST;						
+	DMA_InitStructure.DMA_BufferSize = 0;
+	DMA_InitStructure.DMA_PeripheralInc = DMA_PeripheralInc_Disable;
+	DMA_InitStructure.DMA_MemoryInc = DMA_MemoryInc_Enable;					
+	DMA_InitStructure.DMA_PeripheralDataSize = DMA_PeripheralDataSize_HalfWord;//这里传输的是多少位，根据你定义的存放CCR值得数据类型，我是u16
+	DMA_InitStructure.DMA_MemoryDataSize = DMA_MemoryDataSize_HalfWord;//这里传输的是多少位，根据你定义的存放CCR值得数据类型，我是u16
+	DMA_InitStructure.DMA_Mode = DMA_Mode_Normal;							
+	DMA_InitStructure.DMA_Priority = DMA_Priority_High;
+	DMA_InitStructure.DMA_M2M = DMA_M2M_Disable;
+	DMA_Init(DMA1_Channel2, &DMA_InitStructure);
+	DMA_ITConfig(DMA1_Channel2,DMA_IT_TC,ENABLE);
+	TIM_DMACmd(TIM2, TIM_DMA_Update, ENABLE);
+	TIM_Cmd(TIM2, DISABLE);
+
+	for (i = 0; i < 24*WS2812_NUM; i++)
+	{
+		DispBuff[i] = 00;
+	}
+	
 }
 
 
 
 
-
+// Num:第几个灯，从0开始
 void  WS2812_SetColor(u8 Red, u8 Green, u8 Blue,u8 Num)
 {
 	u8 i;
@@ -124,26 +126,53 @@ void  WS2812_SetColor(u8 Red, u8 Green, u8 Blue,u8 Num)
 }
 
 
+// void AsciiCodeSend(char *Data)
+// {
+// 	u16 i,k;
+// 	char *Pbuf = Data;
+// 	TotalData = strlen(Data);
+// 	for (i = 0; i < TotalData; i++)
+// 	{
+// 		for (k = 0; k < 8; k++)
+// 		{
+// 			if( ((*Data)&(0x80>>k)) )
+// 			{
+// 				DispBuff[i*8+k] = Code1;
+// 			}
+// 			else
+// 			{
+// 				DispBuff[i*8+k] = Code0;
+// 			}
+// 		}
+// 		Pbuf++;
+// 	}
+// }
+
+
+
+
+
+
 
 void RGB_SendToLED()
 {
-	DMA_Cmd(DMA1_Channel5,DISABLE);
-	DMA_ClearITPendingBit(DMA1_IT_GL5);
-	DMA_SetCurrDataCounter(DMA1_Channel5,24*WS2812_NUM);
-	DMA_Cmd(DMA1_Channel5,ENABLE);
+	if(ComplateFlag == 1)
+	{
+		DMA_SetCurrDataCounter(DMA1_Channel2,24*(WS2812_NUM+1));
+		DMA_Cmd(DMA1_Channel2,ENABLE);
+		TIM_Cmd(TIM2,ENABLE);
+		ComplateFlag = 0;
+	}
 }
 
 
-void DMA1_Channel5_IRQHandler()
+void DMA1_Channel2_IRQHandler()
 {
-	u8 i;
-	DMA_ClearITPendingBit(DMA1_IT_GL5);
-	// 等待SPI传输完成
-	i = 0;
-	while( (SPI_I2S_GetFlagStatus(SPI2, SPI_I2S_FLAG_TXE) == RESET)&&( i++ < 100 ));
-	i = 0;
-    while( (SPI_I2S_GetFlagStatus(SPI2, SPI_I2S_FLAG_BSY) != RESET)&&( i++ < 100 ));
-
+	DMA_ClearITPendingBit(DMA1_IT_TC2);
+	DMA_ClearFlag(DMA1_FLAG_TC2);
+	ComplateFlag = 1;
+	TIM_Cmd(TIM2,DISABLE);//定时器必须在这里关
+	DMA_Cmd(DMA1_Channel2,DISABLE);
 }
 
 
@@ -166,7 +195,14 @@ void DMA1_Channel5_IRQHandler()
 
 
 
+	NVIC_InitTypeDef  NVIC_Initstr;
 
+
+	// NVIC_Initstr.NVIC_IRQChannel=USART1_IRQn;
+	// NVIC_Initstr.NVIC_IRQChannelPreemptionPriority=4;
+	// NVIC_Initstr.NVIC_IRQChannelSubPriority=0;
+	// NVIC_Initstr.NVIC_IRQChannelCmd=ENABLE;
+	// NVIC_Init(&NVIC_Initstr);
 
 
 

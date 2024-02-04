@@ -6,6 +6,8 @@
 #include "PID.h"
 #include <math.h>
 #include "Timer.h"
+#include "LED.h"
+
 
 static PID_t PositionPID;
 static PID_t SpeedPID;
@@ -15,22 +17,9 @@ static u16  TIM_PeriodVal = 72*1000/CLK_DIV/PWM_FRQUENCE;
 
 #define SQRT_3      (1.7320508075f)//sqrt(3)/
 #define SQRT_3_2    (0.8660254037f)//sqrt(3)/2
-#define LED_ON  GPIO_ResetBits(GPIOB,GPIO_Pin_9)
-#define LED_OF  GPIO_SetBits(GPIOB,GPIO_Pin_9)
+
 #define ValueLimit(Val,Min,Max) ((Val)<(Min)?(Min):((Val)>(Max)?(Max):(Val)))
 static PID_t PositionPID;
-void LED_Init()
-{
-
-	GPIO_InitTypeDef GPIO_Initstructure;
-	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB,ENABLE);
-	
-	GPIO_Initstructure.GPIO_Pin = GPIO_Pin_9;	
-	GPIO_Initstructure.GPIO_Speed = GPIO_Speed_10MHz;
-	GPIO_Initstructure.GPIO_Mode = GPIO_Mode_Out_PP;
-	GPIO_Init(GPIOB,&GPIO_Initstructure);
-
-}
 
 void PWM_Init()
 {

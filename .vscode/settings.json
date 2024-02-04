@@ -1,0 +1,12 @@
+{
+    "files.associations": {
+        "*.cpp": "cpp",
+        "morsecode.h": "c",
+        "stm32f10x.h": "c",
+        "led.h": "c",
+        "ws2812.h": "c",
+        "datatype.h": "c",
+        "asciicode.h": "c",
+        "string.h": "c"
+    }
+}

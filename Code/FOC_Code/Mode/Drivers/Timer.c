@@ -3,7 +3,8 @@
 #include "DataType.h"
 #include "stm32f10x.h"
 #include "Key.h"
-
+#include "MorseCode.h"
+#include "AsciiCode.h"
 // Timer1-4
 
 #define MAX_VAL (1000) // 10 S
@@ -124,6 +125,8 @@ void TIM3_IRQHandler(void) // TIM3ÖÐ¶Ï
 	{
 		TIM_ClearITPendingBit(TIM3, TIM_IT_Update);
 
+		// AsciiCodeTimerTick();
+		MorseCodeTimerTick();
 		button_ticks();
 
 		if (Count >= MAX_VAL)
