@@ -83,12 +83,29 @@ void MorseCode_Init(void)
 }
 
 
+static void MorseCodeSet_High()
+{
+	LED_ON;//高电平
+	WS2812_SetColor(20,20,240,0);
+	RGB_SendToLED();
+}
+
+
+static void MorseCodeSet_Low()
+{
+	LED_OFF;//低电平
+	WS2812_SetColor(0,0,0,0);
+	RGB_SendToLED();
+}
+
+
 void MorseCodeSend(char *Data)
 {
 	u16 i;
+	u16 Length;
 	if(TotalData == 0)
 	{
-		TotalData = strlen(Data);
+		Length = strlen(Data);
 		for ( i = 0; i < TotalData; i++)
 		{
 			if( ( '0' <= (*Data)) && ((*Data) <= '9') )
@@ -168,7 +185,7 @@ void MorseCodeSend(char *Data)
 			Data++;
 		}
 		BufCnt = 0;
-		      Delay_ms(500);
+		TotalData = Length;
 	}
 }
 
@@ -188,16 +205,11 @@ void MorseCodeTimerTick()
 	{
 		if(CodeTable[Buff[BufCnt]].Letter == ' ')
 		{
-			LED_OFF;//低电平
-			WS2812_SetColor(0,0,0,0);
-			RGB_SendToLED();
+			MorseCodeSet_Low();
 		}
 		else
 		{
-			LED_ON;//高电平
-			WS2812_SetColor(20,20,240,0);
-			RGB_SendToLED();
-
+			MorseCodeSet_High();
 		}
 	}
 	else
@@ -207,9 +219,7 @@ void MorseCodeTimerTick()
 		{
 			if(TimeCnt < (CodeTable[Buff[BufCnt]].MorseCode[MCoffset] + DOT - 1))
 			{
-				LED_OFF;//低电平
-				WS2812_SetColor(0,0,0,0);
-				RGB_SendToLED();
+				MorseCodeSet_Low();
 			}
 			else
 			{
@@ -231,9 +241,7 @@ void MorseCodeTimerTick()
 		{
 			if(TimeCnt < (CodeTable[Buff[BufCnt]].MorseCode[MCoffset] + 3*DOT - 1))
 			{
-				LED_OFF;//低电平
-				WS2812_SetColor(0,0,0,0);
-				RGB_SendToLED();
+				MorseCodeSet_Low();
 			}
 			else
 			{

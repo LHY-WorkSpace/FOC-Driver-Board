@@ -83,7 +83,8 @@ void  WS2812_Init(void)
 	{
 		DispBuff[i] = 00;
 	}
-	
+	RGB_SendToLED();
+	Delay_ms(500);
 }
 
 
@@ -93,8 +94,9 @@ void  WS2812_Init(void)
 void  WS2812_SetColor(u8 Red, u8 Green, u8 Blue,u8 Num)
 {
 	u8 i;
+
 	for(i = 0; i < 8; i++)
-	{	
+	{
 		if( (Green&(0x80>>i)) )
 		{
 			DispBuff[Num*3+i] = Code1;
@@ -122,8 +124,19 @@ void  WS2812_SetColor(u8 Red, u8 Green, u8 Blue,u8 Num)
 			DispBuff[Num*3+i+16] = Code0;
 		}
 	}
-			
 }
+
+
+void  WS2812_SetAll(u8 Red, u8 Green, u8 Blue)
+{
+	u8 i;
+
+	for(i = 0; i < WS2812_NUM; i++)
+	{
+		WS2812_SetColor(Red,Green,Blue,i);
+	}
+}
+
 
 
 // void AsciiCodeSend(char *Data)

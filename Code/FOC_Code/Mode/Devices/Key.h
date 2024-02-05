@@ -5,17 +5,17 @@
 #include "string.h"
 
 
-#define KEY_LEFT        GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_2)
-#define KEY_DOWN        GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_1)
-#define KEY_UP          GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_0)
-#define KEY_RIGHT       GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_3)
+#define KEY_UP        GPIO_ReadInputDataBit(GPIOB,GPIO_Pin_1)
+// #define KEY_DOWN        GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_1)
+// #define KEY_UP          GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_0)
+// #define KEY_RIGHT       GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_3)
 
 
 //According to your need to modify the constants.
 #define TICKS_INTERVAL    10	//ms
-#define DEBOUNCE_TICKS    4	//MAX 8
-#define SHORT_TICKS       (200 /TICKS_INTERVAL)
-#define LONG_TICKS        (600 /TICKS_INTERVAL)
+#define DEBOUNCE_TICKS    2	//MAX 8
+#define SHORT_TICKS       (300 /TICKS_INTERVAL)
+#define LONG_TICKS        (900 /TICKS_INTERVAL)
 
 
 typedef void (*BtnCallback)(void*);

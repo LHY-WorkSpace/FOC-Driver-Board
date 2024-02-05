@@ -184,12 +184,12 @@ uint8_t read_button_GPIO(uint8_t button_id)
 	{
 		case Key_Up:
 			return KEY_UP;
-		case Key_Down:
-			return KEY_DOWN;
-		case Key_Left:
-			return KEY_LEFT;
-		case Key_Right:
-			return KEY_RIGHT;
+		// case Key_Down:
+		// 	return KEY_DOWN;
+		// case Key_Left:
+		// 	return KEY_LEFT;
+		// case Key_Right:
+		// 	return KEY_RIGHT;
 		default:
 			return 0;
 	}
@@ -346,12 +346,12 @@ void Key_IO_Init()
 {
 
 	GPIO_InitTypeDef GPIO_Initstructure;
-	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA,ENABLE);
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB,ENABLE);
 	
-	GPIO_Initstructure.GPIO_Pin = GPIO_Pin_0|GPIO_Pin_1|GPIO_Pin_2|GPIO_Pin_3;	
+	GPIO_Initstructure.GPIO_Pin = GPIO_Pin_1;	
 	GPIO_Initstructure.GPIO_Speed = GPIO_Speed_10MHz;
 	GPIO_Initstructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
-	GPIO_Init(GPIOA,&GPIO_Initstructure);
+	GPIO_Init(GPIOB,&GPIO_Initstructure);
 }
 
 
@@ -362,9 +362,9 @@ void Key_Init()
 	Key_IO_Init();
 
     Button_init(&Button_Up,read_button_GPIO,RESET,Key_Up);
-    Button_init(&Button_Down,read_button_GPIO,RESET,Key_Down);
-    Button_init(&Button_Left,read_button_GPIO,RESET,Key_Left);
-    Button_init(&Button_Right,read_button_GPIO,RESET,Key_Right);
+    // Button_init(&Button_Down,read_button_GPIO,RESET,Key_Down);
+    // Button_init(&Button_Left,read_button_GPIO,RESET,Key_Left);
+    // Button_init(&Button_Right,read_button_GPIO,RESET,Key_Right);
 
 
     // button_attach(&Button_Up, PRESS_DOWN,       PRESS_DOWN_Handler);
@@ -378,16 +378,16 @@ void Key_Init()
     // button_attach(&Button_Down, PRESS_DOWN,       PRESS_DOWN_Handler);
 	// button_attach(&Button_Down, PRESS_UP,         PRESS_UP_Handler);
 	// button_attach(&Button_Down, PRESS_REPEAT,     PRESS_REPEAT_Handler);
-	button_attach(&Button_Down, SINGLE_CLICK,     SINGLE_Click_Handler);
-	button_attach(&Button_Down, DOUBLE_CLICK,     DOUBLE_Click_Handler);
+	// button_attach(&Button_Down, SINGLE_CLICK,     SINGLE_Click_Handler);
+	// button_attach(&Button_Down, DOUBLE_CLICK,     DOUBLE_Click_Handler);
 	// button_attach(&Button_Down, LONG_PRESS_START, LONG_PRESS_START_Handler);
 	// button_attach(&Button_Down, LONG_PRESS_HOLD,  LONG_PRESS_HOLD_Handler);
 
     // button_attach(&Button_Left, PRESS_DOWN,       PRESS_DOWN_Handler);
 	// button_attach(&Button_Left, PRESS_UP,         PRESS_UP_Handler);
 	// button_attach(&Button_Left, PRESS_REPEAT,     PRESS_REPEAT_Handler);
-	button_attach(&Button_Left, SINGLE_CLICK,     SINGLE_Click_Handler);
-	button_attach(&Button_Left, DOUBLE_CLICK,     DOUBLE_Click_Handler);
+	// button_attach(&Button_Left, SINGLE_CLICK,     SINGLE_Click_Handler);
+	// button_attach(&Button_Left, DOUBLE_CLICK,     DOUBLE_Click_Handler);
 	// button_attach(&Button_Left, LONG_PRESS_START, LONG_PRESS_START_Handler);
 	// button_attach(&Button_Left, LONG_PRESS_HOLD,  LONG_PRESS_HOLD_Handler);
 
@@ -395,15 +395,15 @@ void Key_Init()
     // button_attach(&Button_Right, PRESS_DOWN,       PRESS_DOWN_Handler);
 	// button_attach(&Button_Right, PRESS_UP,         PRESS_UP_Handler);
 	// button_attach(&Button_Right, PRESS_REPEAT,     PRESS_REPEAT_Handler);
-	button_attach(&Button_Right, SINGLE_CLICK,     SINGLE_Click_Handler);
-	button_attach(&Button_Right, DOUBLE_CLICK,     DOUBLE_Click_Handler);
+	// button_attach(&Button_Right, SINGLE_CLICK,     SINGLE_Click_Handler);
+	// button_attach(&Button_Right, DOUBLE_CLICK,     DOUBLE_Click_Handler);
 	// button_attach(&Button_Right, LONG_PRESS_START, LONG_PRESS_START_Handler);
 	// button_attach(&Button_Right, LONG_PRESS_HOLD,  LONG_PRESS_HOLD_Handler);
 
     button_start(&Button_Up);
-    button_start(&Button_Down);
-    button_start(&Button_Left);
-    button_start(&Button_Right);
+    // button_start(&Button_Down);
+    // button_start(&Button_Left);
+    // button_start(&Button_Right);
 
 }   
 
