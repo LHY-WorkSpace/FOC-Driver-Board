@@ -3,6 +3,7 @@
 #include "stm32f10x.h"
 #include "string.h"
 #include "LED.h"
+#include "WS2812.h"
 
 static u16 Buff[1024];
 static u16 BufCnt = 0;
@@ -86,7 +87,7 @@ void MorseCode_Init(void)
 static void MorseCodeSet_High()
 {
 	LED_ON;//高电平
-	WS2812_SetColor(20,20,240,0);
+	WS2812_SetAll(20,20,240);
 	RGB_SendToLED();
 }
 
@@ -94,7 +95,7 @@ static void MorseCodeSet_High()
 static void MorseCodeSet_Low()
 {
 	LED_OFF;//低电平
-	WS2812_SetColor(0,0,0,0);
+	WS2812_SetAll(0,0,0);
 	RGB_SendToLED();
 }
 

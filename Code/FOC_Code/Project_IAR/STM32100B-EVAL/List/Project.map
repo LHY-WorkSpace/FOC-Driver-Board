@@ -1,0 +1,605 @@
+###############################################################################
+#
+# IAR ELF Linker V7.40.3.8902/W32 for ARM                 21/Mar/2024  11:19:01
+# Copyright 2007-2015 IAR Systems AB.
+#
+#    Output file  =  
+#        E:\当前使用\FOC-Driver-Board\Code\FOC_Code\Project_IAR\STM32100B-EVAL\Exe\Project.out.tmp
+#    Map file     =  
+#        E:\当前使用\FOC-Driver-Board\Code\FOC_Code\Project_IAR\STM32100B-EVAL\List\Project.map
+#    Command line =  
+#        E:\当前使用\FOC-Driver-Board\Code\FOC_Code\Project_IAR\STM32100B-EVAL\Obj\ADC.o
+#        E:\当前使用\FOC-Driver-Board\Code\FOC_Code\Project_IAR\STM32100B-EVAL\Obj\AS5600.o
+#        E:\当前使用\FOC-Driver-Board\Code\FOC_Code\Project_IAR\STM32100B-EVAL\Obj\AsciiCode.o
+#        E:\当前使用\FOC-Driver-Board\Code\FOC_Code\Project_IAR\STM32100B-EVAL\Obj\core_cm3.o
+#        E:\当前使用\FOC-Driver-Board\Code\FOC_Code\Project_IAR\STM32100B-EVAL\Obj\DataType.o
+#        E:\当前使用\FOC-Driver-Board\Code\FOC_Code\Project_IAR\STM32100B-EVAL\Obj\eeprom.o
+#        E:\当前使用\FOC-Driver-Board\Code\FOC_Code\Project_IAR\STM32100B-EVAL\Obj\FOC.o
+#        E:\当前使用\FOC-Driver-Board\Code\FOC_Code\Project_IAR\STM32100B-EVAL\Obj\Key.o
+#        E:\当前使用\FOC-Driver-Board\Code\FOC_Code\Project_IAR\STM32100B-EVAL\Obj\LED.o
+#        E:\当前使用\FOC-Driver-Board\Code\FOC_Code\Project_IAR\STM32100B-EVAL\Obj\main.o
+#        E:\当前使用\FOC-Driver-Board\Code\FOC_Code\Project_IAR\STM32100B-EVAL\Obj\misc.o
+#        E:\当前使用\FOC-Driver-Board\Code\FOC_Code\Project_IAR\STM32100B-EVAL\Obj\MorseCode.o
+#        E:\当前使用\FOC-Driver-Board\Code\FOC_Code\Project_IAR\STM32100B-EVAL\Obj\PID.o
+#        E:\当前使用\FOC-Driver-Board\Code\FOC_Code\Project_IAR\STM32100B-EVAL\Obj\startup_stm32f10x_md.o
+#        E:\当前使用\FOC-Driver-Board\Code\FOC_Code\Project_IAR\STM32100B-EVAL\Obj\stm32f10x_adc.o
+#        E:\当前使用\FOC-Driver-Board\Code\FOC_Code\Project_IAR\STM32100B-EVAL\Obj\stm32f10x_bkp.o
+#        E:\当前使用\FOC-Driver-Board\Code\FOC_Code\Project_IAR\STM32100B-EVAL\Obj\stm32f10x_can.o
+#        E:\当前使用\FOC-Driver-Board\Code\FOC_Code\Project_IAR\STM32100B-EVAL\Obj\stm32f10x_cec.o
+#        E:\当前使用\FOC-Driver-Board\Code\FOC_Code\Project_IAR\STM32100B-EVAL\Obj\stm32f10x_crc.o
+#        E:\当前使用\FOC-Driver-Board\Code\FOC_Code\Project_IAR\STM32100B-EVAL\Obj\stm32f10x_dac.o
+#        E:\当前使用\FOC-Driver-Board\Code\FOC_Code\Project_IAR\STM32100B-EVAL\Obj\stm32f10x_dbgmcu.o
+#        E:\当前使用\FOC-Driver-Board\Code\FOC_Code\Project_IAR\STM32100B-EVAL\Obj\stm32f10x_dma.o
+#        E:\当前使用\FOC-Driver-Board\Code\FOC_Code\Project_IAR\STM32100B-EVAL\Obj\stm32f10x_exti.o
+#        E:\当前使用\FOC-Driver-Board\Code\FOC_Code\Project_IAR\STM32100B-EVAL\Obj\stm32f10x_flash.o
+#        E:\当前使用\FOC-Driver-Board\Code\FOC_Code\Project_IAR\STM32100B-EVAL\Obj\stm32f10x_fsmc.o
+#        E:\当前使用\FOC-Driver-Board\Code\FOC_Code\Project_IAR\STM32100B-EVAL\Obj\stm32f10x_gpio.o
+#        E:\当前使用\FOC-Driver-Board\Code\FOC_Code\Project_IAR\STM32100B-EVAL\Obj\stm32f10x_i2c.o
+#        E:\当前使用\FOC-Driver-Board\Code\FOC_Code\Project_IAR\STM32100B-EVAL\Obj\stm32f10x_it.o
+#        E:\当前使用\FOC-Driver-Board\Code\FOC_Code\Project_IAR\STM32100B-EVAL\Obj\stm32f10x_iwdg.o
+#        E:\当前使用\FOC-Driver-Board\Code\FOC_Code\Project_IAR\STM32100B-EVAL\Obj\stm32f10x_pwr.o
+#        E:\当前使用\FOC-Driver-Board\Code\FOC_Code\Project_IAR\STM32100B-EVAL\Obj\stm32f10x_rcc.o
+#        E:\当前使用\FOC-Driver-Board\Code\FOC_Code\Project_IAR\STM32100B-EVAL\Obj\stm32f10x_rtc.o
+#        E:\当前使用\FOC-Driver-Board\Code\FOC_Code\Project_IAR\STM32100B-EVAL\Obj\stm32f10x_sdio.o
+#        E:\当前使用\FOC-Driver-Board\Code\FOC_Code\Project_IAR\STM32100B-EVAL\Obj\stm32f10x_spi.o
+#        E:\当前使用\FOC-Driver-Board\Code\FOC_Code\Project_IAR\STM32100B-EVAL\Obj\stm32f10x_tim.o
+#        E:\当前使用\FOC-Driver-Board\Code\FOC_Code\Project_IAR\STM32100B-EVAL\Obj\stm32f10x_usart.o
+#        E:\当前使用\FOC-Driver-Board\Code\FOC_Code\Project_IAR\STM32100B-EVAL\Obj\stm32f10x_wwdg.o
+#        E:\当前使用\FOC-Driver-Board\Code\FOC_Code\Project_IAR\STM32100B-EVAL\Obj\system_stm32f10x.o
+#        E:\当前使用\FOC-Driver-Board\Code\FOC_Code\Project_IAR\STM32100B-EVAL\Obj\Timer.o
+#        E:\当前使用\FOC-Driver-Board\Code\FOC_Code\Project_IAR\STM32100B-EVAL\Obj\transform_3D.o
+#        E:\当前使用\FOC-Driver-Board\Code\FOC_Code\Project_IAR\STM32100B-EVAL\Obj\u8g2_bitmap.o
+#        E:\当前使用\FOC-Driver-Board\Code\FOC_Code\Project_IAR\STM32100B-EVAL\Obj\u8g2_box.o
+#        E:\当前使用\FOC-Driver-Board\Code\FOC_Code\Project_IAR\STM32100B-EVAL\Obj\u8g2_buffer.o
+#        E:\当前使用\FOC-Driver-Board\Code\FOC_Code\Project_IAR\STM32100B-EVAL\Obj\u8g2_button.o
+#        E:\当前使用\FOC-Driver-Board\Code\FOC_Code\Project_IAR\STM32100B-EVAL\Obj\u8g2_circle.o
+#        E:\当前使用\FOC-Driver-Board\Code\FOC_Code\Project_IAR\STM32100B-EVAL\Obj\u8g2_cleardisplay.o
+#        E:\当前使用\FOC-Driver-Board\Code\FOC_Code\Project_IAR\STM32100B-EVAL\Obj\u8g2_d_memory.o
+#        E:\当前使用\FOC-Driver-Board\Code\FOC_Code\Project_IAR\STM32100B-EVAL\Obj\u8g2_d_setup.o
+#        E:\当前使用\FOC-Driver-Board\Code\FOC_Code\Project_IAR\STM32100B-EVAL\Obj\u8g2_font.o
+#        E:\当前使用\FOC-Driver-Board\Code\FOC_Code\Project_IAR\STM32100B-EVAL\Obj\u8g2_fonts.o
+#        E:\当前使用\FOC-Driver-Board\Code\FOC_Code\Project_IAR\STM32100B-EVAL\Obj\u8g2_hvline.o
+#        E:\当前使用\FOC-Driver-Board\Code\FOC_Code\Project_IAR\STM32100B-EVAL\Obj\u8g2_input_value.o
+#        E:\当前使用\FOC-Driver-Board\Code\FOC_Code\Project_IAR\STM32100B-EVAL\Obj\u8g2_intersection.o
+#        E:\当前使用\FOC-Driver-Board\Code\FOC_Code\Project_IAR\STM32100B-EVAL\Obj\u8g2_kerning.o
+#        E:\当前使用\FOC-Driver-Board\Code\FOC_Code\Project_IAR\STM32100B-EVAL\Obj\u8g2_line.o
+#        E:\当前使用\FOC-Driver-Board\Code\FOC_Code\Project_IAR\STM32100B-EVAL\Obj\u8g2_ll_hvline.o
+#        E:\当前使用\FOC-Driver-Board\Code\FOC_Code\Project_IAR\STM32100B-EVAL\Obj\u8g2_message.o
+#        E:\当前使用\FOC-Driver-Board\Code\FOC_Code\Project_IAR\STM32100B-EVAL\Obj\u8g2_polygon.o
+#        E:\当前使用\FOC-Driver-Board\Code\FOC_Code\Project_IAR\STM32100B-EVAL\Obj\u8g2_selection_list.o
+#        E:\当前使用\FOC-Driver-Board\Code\FOC_Code\Project_IAR\STM32100B-EVAL\Obj\u8g2_setup.o
+#        E:\当前使用\FOC-Driver-Board\Code\FOC_Code\Project_IAR\STM32100B-EVAL\Obj\u8g2_UserGUI.o
+#        E:\当前使用\FOC-Driver-Board\Code\FOC_Code\Project_IAR\STM32100B-EVAL\Obj\u8log.o
+#        E:\当前使用\FOC-Driver-Board\Code\FOC_Code\Project_IAR\STM32100B-EVAL\Obj\u8log_u8g2.o
+#        E:\当前使用\FOC-Driver-Board\Code\FOC_Code\Project_IAR\STM32100B-EVAL\Obj\u8log_u8x8.o
+#        E:\当前使用\FOC-Driver-Board\Code\FOC_Code\Project_IAR\STM32100B-EVAL\Obj\u8x8_8x8.o
+#        E:\当前使用\FOC-Driver-Board\Code\FOC_Code\Project_IAR\STM32100B-EVAL\Obj\u8x8_byte.o
+#        E:\当前使用\FOC-Driver-Board\Code\FOC_Code\Project_IAR\STM32100B-EVAL\Obj\u8x8_cad.o
+#        E:\当前使用\FOC-Driver-Board\Code\FOC_Code\Project_IAR\STM32100B-EVAL\Obj\u8x8_capture.o
+#        E:\当前使用\FOC-Driver-Board\Code\FOC_Code\Project_IAR\STM32100B-EVAL\Obj\u8x8_d_ssd1306_128x64_noname.o
+#        E:\当前使用\FOC-Driver-Board\Code\FOC_Code\Project_IAR\STM32100B-EVAL\Obj\u8x8_debounce.o
+#        E:\当前使用\FOC-Driver-Board\Code\FOC_Code\Project_IAR\STM32100B-EVAL\Obj\u8x8_display.o
+#        E:\当前使用\FOC-Driver-Board\Code\FOC_Code\Project_IAR\STM32100B-EVAL\Obj\u8x8_fonts.o
+#        E:\当前使用\FOC-Driver-Board\Code\FOC_Code\Project_IAR\STM32100B-EVAL\Obj\u8x8_gpio.o
+#        E:\当前使用\FOC-Driver-Board\Code\FOC_Code\Project_IAR\STM32100B-EVAL\Obj\u8x8_input_value.o
+#        E:\当前使用\FOC-Driver-Board\Code\FOC_Code\Project_IAR\STM32100B-EVAL\Obj\u8x8_message.o
+#        E:\当前使用\FOC-Driver-Board\Code\FOC_Code\Project_IAR\STM32100B-EVAL\Obj\u8x8_selection_list.o
+#        E:\当前使用\FOC-Driver-Board\Code\FOC_Code\Project_IAR\STM32100B-EVAL\Obj\u8x8_setup.o
+#        E:\当前使用\FOC-Driver-Board\Code\FOC_Code\Project_IAR\STM32100B-EVAL\Obj\u8x8_string.o
+#        E:\当前使用\FOC-Driver-Board\Code\FOC_Code\Project_IAR\STM32100B-EVAL\Obj\u8x8_u16toa.o
+#        E:\当前使用\FOC-Driver-Board\Code\FOC_Code\Project_IAR\STM32100B-EVAL\Obj\u8x8_u8toa.o
+#        E:\当前使用\FOC-Driver-Board\Code\FOC_Code\Project_IAR\STM32100B-EVAL\Obj\usart.o
+#        E:\当前使用\FOC-Driver-Board\Code\FOC_Code\Project_IAR\STM32100B-EVAL\Obj\WS2812.o
+#        --redirect _Printf=_PrintfFull --redirect _Scanf=_ScanfFull -o
+#        E:\当前使用\FOC-Driver-Board\Code\FOC_Code\Project_IAR\STM32100B-EVAL\Exe\Project.out.tmp
+#        --map
+#        E:\当前使用\FOC-Driver-Board\Code\FOC_Code\Project_IAR\STM32100B-EVAL\List\Project.map
+#        --config
+#        E:\当前使用\FOC-Driver-Board\Code\FOC_Code\Project_IAR\stm32f10x_flash.icf
+#        --semihosting --entry __iar_program_start --vfe
+#
+###############################################################################
+
+*******************************************************************************
+*** RUNTIME MODEL ATTRIBUTES
+***
+
+CppFlavor                     = *
+__Heap_Handler                = Basic
+__SystemLibrary               = DLib
+__dlib_dynamic_initialization = normal
+
+
+*******************************************************************************
+*** PLACEMENT SUMMARY
+***
+
+"A1":  place at 0x08000000 { ro section .intvec };
+"P1":  place in [from 0x08000000 to 0x080fffff] { ro };
+"P2":  place in [from 0x20000000 to 0x20017fff] { rw, block CSTACK, block HEAP };
+
+  Section            Kind        Address    Size  Object
+  -------            ----        -------    ----  ------
+"A1":                                       0xec
+  .intvec            ro code  0x08000000    0xec  startup_stm32f10x_md.o [1]
+                            - 0x080000ec    0xec
+
+"P1":                                     0x5175
+  .rodata            const    0x080000ec  0x1b34  u8g2_fonts.o [1]
+  .text              ro code  0x08001c20   0x908  DataType.o [1]
+  .text              ro code  0x08002528    0xd8  FltMul.o [4]
+  .text              ro code  0x08002600    0x44  FltToS32.o [4]
+  .text              ro code  0x08002644    0x24  FltCmpLe.o [4]
+  .text              ro code  0x08002668    0x32  I32ToFlt.o [4]
+  .text              ro code  0x0800269a    0x12  stm32f10x_it.o [1]
+  .text              ro code  0x080026ac    0xe6  FltSub.o [4]
+  .text              ro code  0x08002794    0x84  FltAdd.o [4]
+  .text              ro code  0x08002818   0x508  u8g2_font.o [1]
+  .text              ro code  0x08002d20   0x124  u8g2_hvline.o [1]
+  .text              ro code  0x08002e44    0x4e  u8g2_intersection.o [1]
+  .text              ro code  0x08002e94   0x464  u8g2_UserGUI.o [1]
+  .text              ro code  0x080032f8    0x34  stm32f10x_rcc.o [1]
+  .text              ro code  0x0800332c    0xa6  stm32f10x_gpio.o [1]
+  .text              ro code  0x080033d4    0x62  stm32f10x_spi.o [1]
+  .text              ro code  0x08003438    0x38  u8g2_d_setup.o [1]
+  .text              ro code  0x08003470   0x16c  u8x8_display.o [1]
+  .text              ro code  0x080035dc    0x1e  u8g2_cleardisplay.o [1]
+  .text              ro code  0x080035fc    0x1c  FltCmpEq.o [4]
+  .text              ro code  0x08003618    0xfc  FltDiv.o [4]
+  .text              ro code  0x08003714   0x31c  transform_3D.o [1]
+  .text              ro code  0x08003a30    0xb2  u8g2_line.o [1]
+  .text              ro code  0x08003ae4    0xee  u8g2_buffer.o [1]
+  .text              ro code  0x08003bd2    0x88  u8g2_box.o [1]
+  .text              ro code  0x08003c5a   0x16a  u8g2_circle.o [1]
+  .text              ro code  0x08003dc4    0x24  FltCmpGe.o [4]
+  .text              ro code  0x08003de8   0x128  Timer.o [1]
+  .text              ro code  0x08003f10    0x50  u8x8_setup.o [1]
+  .text              ro code  0x08003f60     0xc  u8g2_d_memory.o [1]
+  .text              ro code  0x08003f6c   0x128  u8g2_setup.o [1]
+  .text              ro code  0x08004094     0xa  u8x8_gpio.o [1]
+  .text              ro code  0x080040a0    0x66  ABImemset.o [5]
+  .text              ro code  0x08004108   0x108  stm32f10x_tim.o [1]
+  .text              ro code  0x08004210   0x394  MorseCode.o [1]
+  .text              ro code  0x080045a4   0x214  Key.o [1]
+  .text              ro code  0x080047b8    0xec  WS2812.o [1]
+  .text              ro code  0x080048a4    0x14  memset.o [3]
+  .text              ro code  0x080048b8    0x48  stm32f10x_dma.o [1]
+  .text              ro code  0x08004900   0x180  u8x8_d_ssd1306_128x64_noname.o [1]
+  .text              ro code  0x08004a80   0x100  u8x8_cad.o [1]
+  .text              ro code  0x08004b80    0x28  u8x8_byte.o [1]
+  .text              ro code  0x08004ba8    0xfc  system_stm32f10x.o [1]
+  .text              ro code  0x08004ca4    0xd0  packbits_init.o [5]
+  .text              ro code  0x08004d74     0x6  abort.o [3]
+  .text              ro code  0x08004d7c    0x14  exit.o [6]
+  .text              ro code  0x08004d90    0x96  u8g2_ll_hvline.o [1]
+  .text              ro code  0x08004e26    0x40  zero_init3.o [5]
+  .text              ro code  0x08004e68    0x28  data_init.o [5]
+  .iar.init_table    const    0x08004e90    0x2c  - Linker created -
+  .text              ro code  0x08004ebc    0x1a  cmain.o [5]
+  .text              ro code  0x08004ed6     0x4  low_level_init.o [3]
+  .text              ro code  0x08004eda    0x18  main.o [1]
+  .text              ro code  0x08004ef2     0x4  exit.o [3]
+  .text              ro code  0x08004ef8    0x14  misc.o [1]
+  .text              ro code  0x08004f0c     0xa  cexit.o [5]
+  .text              ro code  0x08004f18    0x10  startup_stm32f10x_md.o [1]
+  .rodata            const    0x08004f28     0xc  u8g2_setup.o [1]
+  .text              ro code  0x08004f34     0xc  cstartup_M.o [5]
+  .text              ro code  0x08004f40     0x4  startup_stm32f10x_md.o [1]
+  .text              ro code  0x08004f44     0x4  startup_stm32f10x_md.o [1]
+  .text              ro code  0x08004f48     0x4  startup_stm32f10x_md.o [1]
+  .text              ro code  0x08004f4c     0x4  startup_stm32f10x_md.o [1]
+  .text              ro code  0x08004f50     0x4  startup_stm32f10x_md.o [1]
+  .text              ro code  0x08004f54     0x4  startup_stm32f10x_md.o [1]
+  .text              ro code  0x08004f58     0x4  startup_stm32f10x_md.o [1]
+  .text              ro code  0x08004f5c     0x4  startup_stm32f10x_md.o [1]
+  .text              ro code  0x08004f60     0x4  startup_stm32f10x_md.o [1]
+  .text              ro code  0x08004f64     0x4  startup_stm32f10x_md.o [1]
+  .text              ro code  0x08004f68     0x4  startup_stm32f10x_md.o [1]
+  .text              ro code  0x08004f6c     0x4  startup_stm32f10x_md.o [1]
+  .text              ro code  0x08004f70     0x4  startup_stm32f10x_md.o [1]
+  .text              ro code  0x08004f74     0x4  startup_stm32f10x_md.o [1]
+  .text              ro code  0x08004f78     0x4  startup_stm32f10x_md.o [1]
+  .text              ro code  0x08004f7c     0x4  startup_stm32f10x_md.o [1]
+  .text              ro code  0x08004f80     0x4  startup_stm32f10x_md.o [1]
+  .text              ro code  0x08004f84     0x4  startup_stm32f10x_md.o [1]
+  .text              ro code  0x08004f88     0x4  startup_stm32f10x_md.o [1]
+  .text              ro code  0x08004f8c     0x4  startup_stm32f10x_md.o [1]
+  .text              ro code  0x08004f90     0x4  startup_stm32f10x_md.o [1]
+  .text              ro code  0x08004f94     0x4  startup_stm32f10x_md.o [1]
+  .text              ro code  0x08004f98     0x4  startup_stm32f10x_md.o [1]
+  .text              ro code  0x08004f9c     0x4  startup_stm32f10x_md.o [1]
+  .text              ro code  0x08004fa0     0x4  startup_stm32f10x_md.o [1]
+  .text              ro code  0x08004fa4     0x4  startup_stm32f10x_md.o [1]
+  .text              ro code  0x08004fa8     0x4  startup_stm32f10x_md.o [1]
+  .text              ro code  0x08004fac     0x4  startup_stm32f10x_md.o [1]
+  .text              ro code  0x08004fb0     0x4  startup_stm32f10x_md.o [1]
+  .text              ro code  0x08004fb4     0x4  startup_stm32f10x_md.o [1]
+  .text              ro code  0x08004fb8     0x4  startup_stm32f10x_md.o [1]
+  .text              ro code  0x08004fbc     0x4  startup_stm32f10x_md.o [1]
+  .text              ro code  0x08004fc0     0x4  startup_stm32f10x_md.o [1]
+  .text              ro code  0x08004fc4     0x4  startup_stm32f10x_md.o [1]
+  .text              ro code  0x08004fc8     0x4  startup_stm32f10x_md.o [1]
+  .text              ro code  0x08004fcc     0x4  startup_stm32f10x_md.o [1]
+  .text              ro code  0x08004fd0     0x4  startup_stm32f10x_md.o [1]
+  .text              ro code  0x08004fd4     0x4  startup_stm32f10x_md.o [1]
+  .text              ro code  0x08004fd8     0x4  startup_stm32f10x_md.o [1]
+  .text              ro code  0x08004fdc     0x4  startup_stm32f10x_md.o [1]
+  .text              ro code  0x08004fe0     0x4  startup_stm32f10x_md.o [1]
+  .rodata            const    0x08004fe4     0x0  zero_init3.o [5]
+  .rodata            const    0x08004fe4     0x0  packbits_init.o [5]
+  Initializer bytes  const    0x08004fe4   0x27d  <for P2 s0>
+                            - 0x08005261  0x5175
+
+"P2":                                     0x1668
+  P2 s0                       0x20000000   0x3d5  <Init block>
+    .data            inited   0x20000000   0x3cc  u8g2_UserGUI.o [1]
+    .data            inited   0x200003cc     0x8  u8g2_UserGUI.o [1]
+    .data            inited   0x200003d4     0x1  WS2812.o [1]
+  .bss               zero     0x200003d8   0x800  MorseCode.o [1]
+  .bss               zero     0x20000bd8   0x400  u8g2_d_memory.o [1]
+  .bss               zero     0x20000fd8   0x270  WS2812.o [1]
+  .bss               zero     0x20001248     0x8  MorseCode.o [1]
+  .bss               zero     0x20001250     0x8  u8g2_UserGUI.o [1]
+  .bss               zero     0x20001258     0x4  Key.o [1]
+  .bss               zero     0x2000125c     0x4  Timer.o [1]
+  .bss               zero     0x20001260     0x1  Timer.o [1]
+  CSTACK                      0x20001268   0x400  <Block>
+    CSTACK           uninit   0x20001268   0x400  <Block tail>
+                            - 0x20001668  0x1668
+
+
+*******************************************************************************
+*** INIT TABLE
+***
+
+          Address     Size
+          -------     ----
+Zero (__iar_zero_init3)
+    1 destination range, total size 0xe89:
+          0x200003d8  0xe89
+
+Copy/packbits (__iar_packbits_init3)
+    1 source range, total size 0x27d (64% of destination):
+          0x08004fe4  0x27d
+    1 destination range, total size 0x3d5:
+          0x20000000  0x3d5
+
+
+
+*******************************************************************************
+*** MODULE SUMMARY
+***
+
+    Module                          ro code  ro data  rw data
+    ------                          -------  -------  -------
+E:\当前使用\FOC-Driver-Board\Code\FOC_Code\Project_IAR\STM32100B-EVAL\Obj: [1]
+    DataType.o                        2 312
+    Key.o                               532                 4
+    MorseCode.o                         916             2 056
+    Timer.o                             296                 5
+    WS2812.o                            236        1      625
+    main.o                               24
+    misc.o                               20
+    startup_stm32f10x_md.o              416
+    stm32f10x_dma.o                      72
+    stm32f10x_gpio.o                    166
+    stm32f10x_it.o                       18
+    stm32f10x_rcc.o                      52
+    stm32f10x_spi.o                      98
+    stm32f10x_tim.o                     264
+    system_stm32f10x.o                  252
+    transform_3D.o                      796
+    u8g2_UserGUI.o                    1 124      636      988
+    u8g2_box.o                          136
+    u8g2_buffer.o                       238
+    u8g2_circle.o                       362
+    u8g2_cleardisplay.o                  30
+    u8g2_d_memory.o                      12             1 024
+    u8g2_d_setup.o                       56
+    u8g2_font.o                       1 288
+    u8g2_fonts.o                               6 964
+    u8g2_hvline.o                       292
+    u8g2_intersection.o                  78
+    u8g2_line.o                         178
+    u8g2_ll_hvline.o                    150
+    u8g2_setup.o                        296       12
+    u8x8_byte.o                          40
+    u8x8_cad.o                          256
+    u8x8_d_ssd1306_128x64_noname.o      384
+    u8x8_display.o                      364
+    u8x8_gpio.o                          10
+    u8x8_setup.o                         80
+    ---------------------------------------------------------
+    Total:                           11 844    7 613    4 702
+
+command line: [2]
+    ---------------------------------------------------------
+    Total:
+
+dl7M_tlf.a: [3]
+    abort.o                               6
+    exit.o                                4
+    low_level_init.o                      4
+    memset.o                             20
+    ---------------------------------------------------------
+    Total:                               34
+
+m7M_tl.a: [4]
+    FltAdd.o                            132
+    FltCmpEq.o                           28
+    FltCmpGe.o                           36
+    FltCmpLe.o                           36
+    FltDiv.o                            252
+    FltMul.o                            216
+    FltSub.o                            230
+    FltToS32.o                           68
+    I32ToFlt.o                           50
+    ---------------------------------------------------------
+    Total:                            1 048
+
+rt7M_tl.a: [5]
+    ABImemset.o                         102
+    cexit.o                              10
+    cmain.o                              26
+    cstartup_M.o                         12
+    data_init.o                          40
+    packbits_init.o                     208
+    zero_init3.o                         64
+    ---------------------------------------------------------
+    Total:                              462
+
+shb_l.a: [6]
+    exit.o                               20
+    ---------------------------------------------------------
+    Total:                               20
+
+    Gaps                                 24                 3
+    Linker created                                44    1 024
+-------------------------------------------------------------
+    Grand Total:                     13 432    7 657    5 729
+
+
+*******************************************************************************
+*** ENTRY LIST
+***
+
+Entry                      Address    Size  Type      Object
+-----                      -------    ----  ----      ------
+.iar.init_table$$Base   0x08004e90           --   Gb  - Linker created -
+.iar.init_table$$Limit  0x08004ebc           --   Gb  - Linker created -
+?main                   0x08004ebd          Code  Gb  cmain.o [5]
+BufCnt                  0x2000124a     0x2  Data  Lc  MorseCode.o [1]
+Buff                    0x200003d8   0x800  Data  Lc  MorseCode.o [1]
+BusFault_Handler        0x080026a1     0x2  Code  Gb  stm32f10x_it.o [1]
+CSTACK$$Base            0x20001268           --   Gb  - Linker created -
+CSTACK$$Limit           0x20001668           --   Gb  - Linker created -
+CodeTable               0x08004308   0x29c  Data  Gb  MorseCode.o [1]
+ComplateFlag            0x200003d4     0x1  Data  Lc  WS2812.o [1]
+Count                   0x2000125c     0x4  Data  Lc  Timer.o [1]
+Cube                    0x20000000    0x48  Data  Gb  u8g2_UserGUI.o [1]
+DMA1_Channel2_IRQHandler
+                        0x0800486b    0x2a  Code  Gb  WS2812.o [1]
+DMA_ClearFlag           0x080048d5    0x10  Code  Gb  stm32f10x_dma.o [1]
+DMA_ClearITPendingBit   0x080048e5    0x10  Code  Gb  stm32f10x_dma.o [1]
+DMA_Cmd                 0x080048b9    0x18  Code  Gb  stm32f10x_dma.o [1]
+DMA_SetCurrDataCounter  0x080048d1     0x4  Code  Gb  stm32f10x_dma.o [1]
+DebugMon_Handler        0x080026a7     0x2  Code  Gb  stm32f10x_it.o [1]
+Delay_Init              0x08003de9    0x38  Code  Gb  Timer.o [1]
+Delay_ms                0x08003e21    0x30  Code  Gb  Timer.o [1]
+DispBuff                0x20000fd8   0x270  Data  Lc  WS2812.o [1]
+FastCos                 0x08001c9f    0x82  Code  Gb  DataType.o [1]
+FastSin                 0x08001c21    0x7e  Code  Gb  DataType.o [1]
+FreeRTOS_Logo           0x200000cc   0x300  Data  Lc  u8g2_UserGUI.o [1]
+GPIO_Init               0x0800332d    0x9e  Code  Gb  stm32f10x_gpio.o [1]
+GPIO_ResetBits          0x080033cf     0x4  Code  Gb  stm32f10x_gpio.o [1]
+GPIO_SetBits            0x080033cb     0x4  Code  Gb  stm32f10x_gpio.o [1]
+HardFault_Handler       0x0800269d     0x2  Code  Gb  stm32f10x_it.o [1]
+Identity_3D             0x0800386b    0x28  Code  Gb  transform_3D.o [1]
+InStream_Read           0x08004ca5    0x22  Code  Lc  packbits_init.o [5]
+MAT_Copy                0x08003715    0x2a  Code  Gb  transform_3D.o [1]
+MAT_Mult                0x0800373f    0x82  Code  Gb  transform_3D.o [1]
+MemManage_Handler       0x0800269f     0x2  Code  Gb  stm32f10x_it.o [1]
+MorseCodeSet_High       0x08004211    0x1c  Code  Lc  MorseCode.o [1]
+MorseCodeSet_Low        0x0800422d    0x1c  Code  Lc  MorseCode.o [1]
+MorseCodeTimerTick      0x08004249    0xb4  Code  Gb  MorseCode.o [1]
+NMI_Handler             0x0800269b     0x2  Code  Gb  stm32f10x_it.o [1]
+NVIC_PriorityGroupConfig
+                        0x08004ef9     0xa  Code  Gb  misc.o [1]
+OLED_Init               0x08002e95    0xa2  Code  Gb  u8g2_UserGUI.o [1]
+PendSV_Handler          0x080026a9     0x2  Code  Gb  stm32f10x_it.o [1]
+PerProject              0x08002f73    0x66  Code  Gb  u8g2_UserGUI.o [1]
+RCC_APB1PeriphClockCmd  0x0800330f    0x16  Code  Gb  stm32f10x_rcc.o [1]
+RCC_APB2PeriphClockCmd  0x080032f9    0x16  Code  Gb  stm32f10x_rcc.o [1]
+RGB_SendToLED           0x0800483d    0x2e  Code  Gb  WS2812.o [1]
+Region$$Table$$Base     0x08004e90           --   Gb  - Linker created -
+Region$$Table$$Limit    0x08004ebc           --   Gb  - Linker created -
+RotateCube2             0x08002fdb   0x1dc  Code  Gb  u8g2_UserGUI.o [1]
+Rotate_3D               0x0800392d   0x100  Code  Gb  transform_3D.o [1]
+SPI_Cmd                 0x0800340d    0x18  Code  Gb  stm32f10x_spi.o [1]
+SPI_I2S_GetFlagStatus   0x08003429     0xe  Code  Gb  stm32f10x_spi.o [1]
+SPI_I2S_SendData        0x08003425     0x4  Code  Gb  stm32f10x_spi.o [1]
+SPI_Init                0x080033d5    0x38  Code  Gb  stm32f10x_spi.o [1]
+SVC_Handler             0x080026a5     0x2  Code  Gb  stm32f10x_it.o [1]
+Scale_3D                0x080038eb    0x42  Code  Gb  transform_3D.o [1]
+SetSysClock             0x08004be9     0x2  Code  Lc  system_stm32f10x.o [1]
+SetSysClockTo72         0x08004beb    0xa4  Code  Lc  system_stm32f10x.o [1]
+SysTick_Handler         0x080026ab     0x2  Code  Gb  stm32f10x_it.o [1]
+SystemInit              0x08004ba9    0x40  Code  Gb  system_stm32f10x.o [1]
+TIM3_IRQHandler         0x08003e61    0x9c  Code  Gb  Timer.o [1]
+TIM_ARRPreloadConfig    0x080041b1    0x18  Code  Gb  stm32f10x_tim.o [1]
+TIM_ClearITPendingBit   0x080041e1     0x6  Code  Gb  stm32f10x_tim.o [1]
+TIM_Cmd                 0x08004199    0x18  Code  Gb  stm32f10x_tim.o [1]
+TIM_GetITStatus         0x080041c9    0x18  Code  Gb  stm32f10x_tim.o [1]
+TIM_TimeBaseInit        0x08004109    0x90  Code  Gb  stm32f10x_tim.o [1]
+Time_Flag               0x20001260     0x1  Data  Lc  Timer.o [1]
+Time_SetFlag            0x08003e51    0x10  Code  Gb  Timer.o [1]
+TotalData               0x2000124c     0x2  Data  Lc  MorseCode.o [1]
+Translate_3D            0x08003893    0x58  Code  Gb  transform_3D.o [1]
+UsageFault_Handler      0x080026a3     0x2  Code  Gb  stm32f10x_it.o [1]
+VEC_MultMatrix          0x080037c1    0xaa  Code  Gb  transform_3D.o [1]
+WS2812_SetAll           0x0800481d    0x20  Code  Gb  WS2812.o [1]
+WS2812_SetColor         0x080047b9    0x64  Code  Gb  WS2812.o [1]
+XOrigin                 0x200003cc     0x4  Data  Gb  u8g2_UserGUI.o [1]
+YOrigin                 0x200003d0     0x4  Data  Gb  u8g2_UserGUI.o [1]
+__aeabi_cfcmpeq         0x080035fd          Code  Gb  FltCmpEq.o [4]
+__aeabi_cfcmple         0x08002645          Code  Gb  FltCmpLe.o [4]
+__aeabi_cfrcmple        0x08003dc5          Code  Gb  FltCmpGe.o [4]
+__aeabi_f2iz            0x08002601          Code  Gb  FltToS32.o [4]
+__aeabi_fadd            0x08002795          Code  Gb  FltAdd.o [4]
+__aeabi_fdiv            0x08003619          Code  Gb  FltDiv.o [4]
+__aeabi_fmul            0x08002529          Code  Gb  FltMul.o [4]
+__aeabi_fsub            0x080026ad          Code  Gb  FltSub.o [4]
+__aeabi_i2f             0x08002669          Code  Gb  I32ToFlt.o [4]
+__aeabi_memset          0x080040a1          Code  Gb  ABImemset.o [5]
+__aeabi_ui2f            0x0800267d          Code  Gb  I32ToFlt.o [4]
+__cmain                 0x08004ebd          Code  Gb  cmain.o [5]
+__exit                  0x08004d7d    0x14  Code  Gb  exit.o [6]
+__iar_Memset            0x080040a1          Code  Gb  ABImemset.o [5]
+__iar_Memset_word       0x080040a9          Code  Gb  ABImemset.o [5]
+__iar_data_init3        0x08004e69    0x28  Code  Gb  data_init.o [5]
+__iar_fadd              0x080027a5          Code  Gb  FltAdd.o [4]
+__iar_fsub              0x080026bd          Code  Gb  FltSub.o [4]
+__iar_fsubStart         0x080026cd          Code  Gb  FltSub.o [4]
+__iar_packbits_init3    0x08004cc7    0xae  Code  Gb  packbits_init.o [5]
+__iar_program_start     0x08004f35          Code  Gb  cstartup_M.o [5]
+__iar_ui2f              0x08002681          Code  Gb  I32ToFlt.o [4]
+__iar_zero_init3        0x08004e27    0x40  Code  Gb  zero_init3.o [5]
+__low_level_init        0x08004ed7     0x4  Code  Gb  low_level_init.o [3]
+__vector_table          0x08000000          Data  Gb  startup_stm32f10x_md.o [1]
+_call_main              0x08004ec9          Code  Gb  cmain.o [5]
+_exit                   0x08004f0d          Code  Gb  cexit.o [5]
+_main                   0x08004ed3          Code  Gb  cmain.o [5]
+abort                   0x08004d75     0x6  Code  Gb  abort.o [3]
+button_handler          0x080045a5   0x1fa  Code  Gb  Key.o [1]
+button_ticks            0x0800479f    0x16  Code  Gb  Key.o [1]
+exit                    0x08004ef3     0x4  Code  Gb  exit.o [3]
+flag                    0x20001250     0x1  Data  Gb  u8g2_UserGUI.o [1]
+head_handle             0x20001258     0x4  Data  Lc  Key.o [1]
+main                    0x08004edb    0x18  Code  Gb  main.o [1]
+memset                  0x080048a5    0x14  Code  Gb  memset.o [3]
+ops                     0x20001251     0x1  Data  Gb  u8g2_UserGUI.o [1]
+sinTable                0x08001d24   0x804  Data  Gb  DataType.o [1]
+turn                    0x20001254     0x4  Data  Gb  u8g2_UserGUI.o [1]
+u8g2_ClearBuffer        0x08003ae5    0x14  Code  Gb  u8g2_buffer.o [1]
+u8g2_ClearDisplay       0x080035dd    0x1e  Code  Gb  u8g2_cleardisplay.o [1]
+u8g2_Data               0x20000048    0x84  Data  Lc  u8g2_UserGUI.o [1]
+u8g2_DrawCircle         0x08003d89    0x3c  Code  Gb  u8g2_circle.o [1]
+u8g2_DrawFrame          0x08003bd3    0x88  Code  Gb  u8g2_box.o [1]
+u8g2_DrawGlyph          0x08002c29    0x5a  Code  Gb  u8g2_font.o [1]
+u8g2_DrawHVLine         0x08002d77    0xa2  Code  Gb  u8g2_hvline.o [1]
+u8g2_DrawLine           0x08003a31    0xb2  Code  Gb  u8g2_line.o [1]
+u8g2_DrawPixel          0x08002e19    0x2c  Code  Gb  u8g2_hvline.o [1]
+u8g2_FirstPage          0x08003b77    0x1c  Code  Gb  u8g2_buffer.o [1]
+u8g2_Init               0x08002f37    0x3c  Code  Gb  u8g2_UserGUI.o [1]
+u8g2_IsIntersection     0x08002e69    0x2a  Code  Gb  u8g2_intersection.o [1]
+u8g2_NextPage           0x08003b93    0x40  Code  Gb  u8g2_buffer.o [1]
+u8g2_SendBuffer         0x08003b49    0x12  Code  Gb  u8g2_buffer.o [1]
+u8g2_SetBufferCurrTileRow
+                        0x08003b5b    0x1c  Code  Gb  u8g2_buffer.o [1]
+u8g2_SetFont            0x08002cfd    0x1e  Code  Gb  u8g2_font.o [1]
+u8g2_SetFontPosBaseline
+                        0x08002cf7     0x6  Code  Gb  u8g2_font.o [1]
+u8g2_SetMaxClipWindow   0x08003f6d    0x16  Code  Gb  u8g2_setup.o [1]
+u8g2_SetupBuffer        0x08003f83    0x46  Code  Gb  u8g2_setup.o [1]
+u8g2_Setup_sh1106_128x64_noname_f
+                        0x08003439    0x2c  Code  Gb  u8g2_d_setup.o [1]
+u8g2_Task               0x080031b7   0x10a  Code  Gb  u8g2_UserGUI.o [1]
+u8g2_UpdateRefHeight    0x08002c83    0x70  Code  Gb  u8g2_font.o [1]
+u8g2_add_vector_x       0x08002963    0x1e  Code  Gb  u8g2_font.o [1]
+u8g2_add_vector_y       0x08002945    0x1e  Code  Gb  u8g2_font.o [1]
+u8g2_apply_clip_window  0x08004013    0x5c  Code  Lc  u8g2_setup.o [1]
+u8g2_cb_r0              0x08004f28     0xc  Data  Gb  u8g2_setup.o [1]
+u8g2_clip_intersection2
+                        0x08002d21    0x40  Code  Lc  u8g2_hvline.o [1]
+u8g2_draw_circle        0x08003d0b    0x7e  Code  Lc  u8g2_circle.o [1]
+u8g2_draw_circle_section
+                        0x08003c5b    0xb0  Code  Lc  u8g2_circle.o [1]
+u8g2_draw_hv_line_2dir  0x08002d61    0x16  Code  Gb  u8g2_hvline.o [1]
+u8g2_draw_l90_r0        0x08004087     0xe  Code  Gb  u8g2_setup.o [1]
+u8g2_font_calc_vref_font
+                        0x08002cf3     0x4  Code  Gb  u8g2_font.o [1]
+u8g2_font_cu12_t_symbols
+                        0x080000ec  0x1b34  Data  Gb  u8g2_fonts.o [1]
+u8g2_font_decode_get_signed_bits
+                        0x08002931    0x14  Code  Gb  u8g2_font.o [1]
+u8g2_font_decode_get_unsigned_bits
+                        0x080028fb    0x36  Code  Gb  u8g2_font.o [1]
+u8g2_font_decode_glyph  0x08002a6b   0x124  Code  Gb  u8g2_font.o [1]
+u8g2_font_decode_len    0x08002981    0xb8  Code  Gb  u8g2_font.o [1]
+u8g2_font_draw_glyph    0x08002bff    0x2a  Code  Lc  u8g2_font.o [1]
+u8g2_font_get_byte      0x08002819     0x4  Code  Lc  u8g2_font.o [1]
+u8g2_font_get_glyph_data
+                        0x08002b8f    0x70  Code  Gb  u8g2_font.o [1]
+u8g2_font_get_word      0x0800281d     0xe  Code  Lc  u8g2_font.o [1]
+u8g2_font_setup_decode  0x08002a39    0x32  Code  Lc  u8g2_font.o [1]
+u8g2_is_intersection_decision_tree
+                        0x08002e45    0x24  Code  Gb  u8g2_intersection.o [1]
+u8g2_ll_hvline_vertical_top_lsb
+                        0x08004d91    0x96  Code  Gb  u8g2_ll_hvline.o [1]
+u8g2_m_16_8_f           0x08003f61     0x8  Code  Gb  u8g2_d_memory.o [1]
+u8g2_read_font_info     0x0800282b    0xd0  Code  Gb  u8g2_font.o [1]
+u8g2_send_buffer        0x08003b15    0x34  Code  Lc  u8g2_buffer.o [1]
+u8g2_send_tile_row      0x08003af9    0x1c  Code  Lc  u8g2_buffer.o [1]
+u8g2_update_dimension_common
+                        0x08003fc9    0x4a  Code  Lc  u8g2_setup.o [1]
+u8g2_update_dimension_r0
+                        0x0800406f     0x2  Code  Gb  u8g2_setup.o [1]
+u8g2_update_page_win_r0
+                        0x08004071    0x16  Code  Gb  u8g2_setup.o [1]
+u8x8_DrawTile           0x080034db    0x1e  Code  Gb  u8x8_display.o [1]
+u8x8_InitDisplay        0x08003507     0xe  Code  Gb  u8x8_display.o [1]
+u8x8_RefreshDisplay     0x08003523     0xe  Code  Gb  u8x8_display.o [1]
+u8x8_SetPowerSave       0x08003515     0xe  Code  Gb  u8x8_display.o [1]
+u8x8_Setup              0x08003f3d    0x22  Code  Gb  u8x8_setup.o [1]
+u8x8_SetupDefaults      0x08003f15    0x22  Code  Gb  u8x8_setup.o [1]
+u8x8_SetupMemory        0x080034f9     0xe  Code  Gb  u8x8_display.o [1]
+u8x8_byte_4wire_hw_spi  0x08003531    0x70  Code  Gb  u8x8_display.o [1]
+u8x8_byte_SendByte      0x08004b9d     0xc  Code  Gb  u8x8_byte.o [1]
+u8x8_byte_SendBytes     0x08004b8f     0xe  Code  Gb  u8x8_byte.o [1]
+u8x8_byte_SetDC         0x08004b81     0xe  Code  Gb  u8x8_byte.o [1]
+u8x8_cad_001            0x08004b35    0x4a  Code  Gb  u8x8_cad.o [1]
+u8x8_cad_EndTransfer    0x08004ab9     0xe  Code  Gb  u8x8_cad.o [1]
+u8x8_cad_SendArg        0x08004a8f     0xe  Code  Gb  u8x8_cad.o [1]
+u8x8_cad_SendCmd        0x08004a81     0xe  Code  Gb  u8x8_cad.o [1]
+u8x8_cad_SendData       0x08004a9d     0xe  Code  Gb  u8x8_cad.o [1]
+u8x8_cad_SendSequence   0x08004ac7    0x6c  Code  Gb  u8x8_cad.o [1]
+u8x8_cad_StartTransfer  0x08004aab     0xe  Code  Gb  u8x8_cad.o [1]
+u8x8_d_helper_display_init
+                        0x0800347b    0x60  Code  Gb  u8x8_display.o [1]
+u8x8_d_helper_display_setup_memory
+                        0x08003471     0xa  Code  Gb  u8x8_display.o [1]
+u8x8_d_sh1106_128x64_noname
+                        0x080049d7    0x3a  Code  Gb  u8x8_d_ssd1306_128x64_noname.o [1]
+u8x8_d_ssd1306_128x64_noname_flip0_seq
+                        0x08004a58     0x8  Data  Lc  u8x8_d_ssd1306_128x64_noname.o [1]
+u8x8_d_ssd1306_128x64_noname_flip1_seq
+                        0x08004a60     0x8  Data  Lc  u8x8_d_ssd1306_128x64_noname.o [1]
+u8x8_d_ssd1306_128x64_noname_init_seq
+                        0x08004a10    0x38  Data  Lc  u8x8_d_ssd1306_128x64_noname.o [1]
+u8x8_d_ssd1306_128x64_noname_powersave0_seq
+                        0x08004a48     0x8  Data  Lc  u8x8_d_ssd1306_128x64_noname.o [1]
+u8x8_d_ssd1306_128x64_noname_powersave1_seq
+                        0x08004a50     0x8  Data  Lc  u8x8_d_ssd1306_128x64_noname.o [1]
+u8x8_d_ssd1306_sh1106_generic
+                        0x08004901    0xd6  Code  Lc  u8x8_d_ssd1306_128x64_noname.o [1]
+u8x8_dummy_cb           0x08003f11     0x4  Code  Gb  u8x8_setup.o [1]
+u8x8_gpio_call          0x08004095     0xa  Code  Gb  u8x8_gpio.o [1]
+u8x8_sh1106_128x64_noname_display_info
+                        0x08004a68    0x18  Data  Lc  u8x8_d_ssd1306_128x64_noname.o [1]
+u8x8_stm32_gpio_and_delay
+                        0x080035a1    0x32  Code  Gb  u8x8_display.o [1]
+
+
+[1] = E:\当前使用\FOC-Driver-Board\Code\FOC_Code\Project_IAR\STM32100B-EVAL\Obj
+[2] = command line
+[3] = dl7M_tlf.a
+[4] = m7M_tl.a
+[5] = rt7M_tl.a
+[6] = shb_l.a
+
+  13 432 bytes of readonly  code memory
+   7 657 bytes of readonly  data memory
+   5 729 bytes of readwrite data memory
+
+Errors: none
+Warnings: none

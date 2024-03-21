@@ -124,6 +124,7 @@ void  WS2812_SetColor(u8 Red, u8 Green, u8 Blue,u8 Num)
 			DispBuff[Num*3+i+16] = Code0;
 		}
 	}
+	memset(&DispBuff[(Num+1)*24],0x00,3);
 }
 
 
