@@ -341,7 +341,7 @@
               <MiscControls></MiscControls>
               <Define>USE_STDPERIPH_DRIVER</Define>
               <Undefine></Undefine>
-              <IncludePath>..\Lib\Core;..\Lib\inc;..\Mode\Drivers;..\User;..\Mode\Devices;..\Mode\Drivers;..\Mode\Modules\u8g2_src</IncludePath>
+              <IncludePath>..\Lib\Core;..\Lib\inc;..\Mode\Drivers;..\User;..\Mode\Devices;..\Mode\Drivers;..\Mode\Modules\u8g2_src;..\Lib\Core\MDK</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -388,12 +388,12 @@
             <File>
               <FileName>core_cm3.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Lib\Core\core_cm3.c</FilePath>
+              <FilePath>..\Lib\Core\MDK\core_cm3.c</FilePath>
             </File>
             <File>
               <FileName>startup_stm32f10x_md.s</FileName>
               <FileType>2</FileType>
-              <FilePath>..\Lib\Core\startup_stm32f10x_md.s</FilePath>
+              <FilePath>..\Lib\Core\MDK\startup_stm32f10x_md.s</FilePath>
             </File>
           </Files>
         </Group>
