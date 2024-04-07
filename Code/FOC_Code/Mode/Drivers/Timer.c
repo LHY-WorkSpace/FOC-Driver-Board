@@ -126,7 +126,7 @@ void TIM3_IRQHandler(void) // TIM3ÖÐ¶Ï
 		TIM_ClearITPendingBit(TIM3, TIM_IT_Update);
 
 		// AsciiCodeTimerTick();
-		MorseCodeTimerTick();
+		// MorseCodeTimerTick();
 		button_ticks();
 
 		if (Count >= MAX_VAL)
@@ -138,6 +138,11 @@ void TIM3_IRQHandler(void) // TIM3ÖÐ¶Ï
 		if (Count % 2 == 0)
 		{
 			Time_SetFlag(Flag_20ms);
+		}
+
+		if (Count % 3 == 0)
+		{
+			Time_SetFlag(Flag_30ms);
 		}
 
 		if (Count % 5 == 0)

@@ -6,6 +6,7 @@ typedef enum
 {
     Flag_10ms,
     Flag_20ms,
+    Flag_30ms,
     Flag_50ms,
     Flag_100ms,
     Flag_200ms,

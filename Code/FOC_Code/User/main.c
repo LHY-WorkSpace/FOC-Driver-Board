@@ -28,9 +28,9 @@ u8 TimeCnt=0;
 // u8 BBB = 240;
 void WS2812_BlueMode()
 {
-	if(TimeCnt != 0)
+	if(TimeCnt >= 0)
 	{
-		WS2812_SetAll(240-TimeCnt*23,240-TimeCnt*23,240);
+		WS2812_SetAll(10+TimeCnt*23,10+TimeCnt*23,240);
 		RGB_SendToLED();
 	}
 }
@@ -41,9 +41,9 @@ void WS2812_BlueMode()
 // u8 BBB = 0;
 void WS2812_OrangeMode()
 {
-	if(TimeCnt != 0)
+	if(TimeCnt >= 0)
 	{
-		WS2812_SetAll(240,240-TimeCnt*19,240-TimeCnt*24);
+		WS2812_SetAll(240,50+TimeCnt*19,TimeCnt*24);
 		RGB_SendToLED();
 	}
 }
@@ -56,7 +56,38 @@ void Task()
   KeyInfo_t KeyState;
 
 
-  if(Time_GetFlag(Flag_20ms) == SET)
+  if(Time_GetFlag(Flag_30ms) == SET)
+  {
+    switch (Flag)
+    {
+      case 0:
+        // WS2812_SetAll(10,10,240);//蓝色
+        WS2812_BlueMode();
+        break;
+      case 1:
+        // WS2812_SetAll(240,50,0);//橙色
+        WS2812_OrangeMode();
+        break;
+      case 2:
+        WS2812_SetAll(240,0,0);//红色
+        RGB_SendToLED();
+        // // MorseCode_Init();
+        // MorseCodeSend("Jack Trust Me");
+        Flag = 0xFF;
+        break;
+      default:
+      break;
+    }
+
+    if(TimeCnt != 0)
+    {
+      TimeCnt--;
+    }
+
+    Time_ResetFlag(Flag_30ms);
+  }
+
+  if(Time_GetFlag(Flag_10ms) == SET)
   {
       KeyState = GetKeyState();
       if(KeyState.KeyState == SINGLE_CLICK)
@@ -71,38 +102,12 @@ void Task()
           }
           TimeCnt = 10;
       }
-      else if(KeyState.KeyState == DOUBLE_CLICK)
+      else if(KeyState.KeyState == LONG_PRESS_HOLD)
       {
           Flag = 2;
       }
-  }
 
-    switch (Flag)
-    {
-      case 0:
-        // WS2812_SetAll(10,10,240);//蓝色
-        WS2812_BlueMode();
-        break;
-      case 1:
-        // WS2812_SetAll(240,50,0);//橙色
-        WS2812_OrangeMode();
-        break;
-      case 2:
-        WS2812_SetAll(240,0,0);//红色
-        // // MorseCode_Init();
-        // MorseCodeSend("Jack Trust Me");
-        Flag = 0xFF;
-        break;
-      default:
-      break;
-    }
-
-  if(Time_GetFlag(Flag_10ms) == SET)
-  {
-    if(TimeCnt != 0)
-    {
-      TimeCnt--;
-    }
+    Time_ResetFlag(Flag_10ms);
   }
 
 }
@@ -115,31 +120,31 @@ int main(void)
   Delay_Init();
   // LED_Init();
   // Delay_ms(500);
-  // Key_Init();
+  Key_Init();
   // EEPROM_Init();
   // AsciiCode_Init();
 
   // 这3个顺序不能动 外接5V注意配置为推挽模式！
-  // WS2812_Init();
+  WS2812_Init();
   // MorseCode_Init();
-  // TIM3_Init(10,72);
+  TIM3_Init(10,72);
 
   // AS5600_Init();
   // PWM_Init();
   // USART1_Init(460800);
-  u8g2_Init();
+  // u8g2_Init();
 
   // AD_Init();
 
   while (1)
   {
     // Foc_CTL();
-    u8g2_Task();
+    // u8g2_Task();
 
       // WS2812_SetColor(10,10,240,1);
       // RGB_SendToLED();
     //   Delay_ms(500);
-	  // Task();
+	  Task();
       // WS2812_SetColor(240,50,0,1);
       // RGB_SendToLED();
       	// MorseCodeSend("Jack Trust Me");

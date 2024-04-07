@@ -99,29 +99,29 @@ void  WS2812_SetColor(u8 Red, u8 Green, u8 Blue,u8 Num)
 	{
 		if( (Green&(0x80>>i)) )
 		{
-			DispBuff[Num*3+i] = Code1;
+			DispBuff[Num*24+i] = Code1;
 		}
 		else
 		{
-			DispBuff[Num*3+i] = Code0;
+			DispBuff[Num*24+i] = Code0;
 		}
 
 		if( (Red&(0x80>>i)) )
 		{
-			DispBuff[Num*3+i+8] = Code1;
+			DispBuff[Num*24+i+8] = Code1;
 		}
 		else
 		{
-			DispBuff[Num*3+i+8] = Code0;
+			DispBuff[Num*24+i+8] = Code0;
 		}
 
 		if( (Blue&(0x80>>i)) )
 		{
-			DispBuff[Num*3+i+16] = Code1;
+			DispBuff[Num*24+i+16] = Code1;
 		}
 		else
 		{
-			DispBuff[Num*3+i+16] = Code0;
+			DispBuff[Num*24+i+16] = Code0;
 		}
 	}
 	memset(&DispBuff[(Num+1)*24],0x00,3);
