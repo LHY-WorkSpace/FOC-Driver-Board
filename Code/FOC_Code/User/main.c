@@ -20,49 +20,92 @@
 // u8 BBB = 240;
 
 
-// void Task()
-// {
-//   static u8 Flag = 0xFF;
-//   KeyInfo_t KeyState;
 
-//   KeyState = GetKeyState();
-//   if(KeyState.KeyState == SINGLE_CLICK)
-//   {
-//     if(Flag == 0)
-//     {
-//       Flag = 1;
-//     }
-//     else
-//     {
-//       Flag = 0;
-//     }
-//   }
-//   else if(KeyState.KeyState == DOUBLE_CLICK)
-//   {
-//     Flag = 2;
-//   }
+u8 TimeCnt=0;
+// 蓝色
+// u8 RRR = 10;
+// u8 GGG = 10;
+// u8 BBB = 240;
+void WS2812_BlueMode()
+{
+	if(TimeCnt != 0)
+	{
+		WS2812_SetAll(240-TimeCnt*23,240-TimeCnt*23,240);
+		RGB_SendToLED();
+	}
+}
 
-//   switch (Flag)
-//   {
-//     case 0:
-//       WS2812_SetAll(10,10,240);//蓝色
-//       break;
-//     case 1:
-//       WS2812_SetAll(240,50,0);//橙色
-//       break;
-//     case 2:
-//       WS2812_SetAll(200,0,0);//红色
-//       // MorseCode_Init();
-//       MorseCodeSend("Jack Trust Me");
-//       Flag = 0xFF;
-//       break;	
-//     case 1:
-//       WS2812_SetAll(0,0,0);//关灯
-//       break;	
-//     default:
-//     break;
-//   }
-// }
+// 橙色
+// u8 RRR = 240;
+// u8 GGG = 50;
+// u8 BBB = 0;
+void WS2812_OrangeMode()
+{
+	if(TimeCnt != 0)
+	{
+		WS2812_SetAll(240,240-TimeCnt*19,240-TimeCnt*24);
+		RGB_SendToLED();
+	}
+}
+
+
+
+void Task()
+{
+  static u8 Flag = 0xFF;
+  KeyInfo_t KeyState;
+
+
+  if(Time_GetFlag(Flag_20ms) == SET)
+  {
+      KeyState = GetKeyState();
+      if(KeyState.KeyState == SINGLE_CLICK)
+      {
+          if(Flag == 0)
+          {
+            Flag = 1;
+          }
+          else
+          {
+            Flag = 0;
+          }
+          TimeCnt = 10;
+      }
+      else if(KeyState.KeyState == DOUBLE_CLICK)
+      {
+          Flag = 2;
+      }
+  }
+
+    switch (Flag)
+    {
+      case 0:
+        // WS2812_SetAll(10,10,240);//蓝色
+        WS2812_BlueMode();
+        break;
+      case 1:
+        // WS2812_SetAll(240,50,0);//橙色
+        WS2812_OrangeMode();
+        break;
+      case 2:
+        WS2812_SetAll(240,0,0);//红色
+        // // MorseCode_Init();
+        // MorseCodeSend("Jack Trust Me");
+        Flag = 0xFF;
+        break;
+      default:
+      break;
+    }
+
+  if(Time_GetFlag(Flag_10ms) == SET)
+  {
+    if(TimeCnt != 0)
+    {
+      TimeCnt--;
+    }
+  }
+
+}
 
 
 
