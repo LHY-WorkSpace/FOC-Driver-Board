@@ -375,7 +375,7 @@ void Key_Init()
 	// button_attach(&Button_Up, PRESS_UP,         PRESS_UP_Handler);
 	// button_attach(&Button_Up, PRESS_REPEAT,     PRESS_REPEAT_Handler);
 	button_attach(&Button_Up, SINGLE_CLICK,     SINGLE_Click_Handler);
-	// button_attach(&Button_Up, DOUBLE_CLICK,     DOUBLE_Click_Handler);
+	button_attach(&Button_Up, DOUBLE_CLICK,     DOUBLE_Click_Handler);
 	// button_attach(&Button_Up, LONG_PRESS_START, LONG_PRESS_START_Handler);
 	button_attach(&Button_Up, LONG_PRESS_HOLD,  LONG_PRESS_HOLD_Handler);
 

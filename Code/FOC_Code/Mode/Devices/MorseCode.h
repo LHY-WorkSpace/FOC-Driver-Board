@@ -18,6 +18,7 @@ typedef struct
 void  MorseCode_Init(void);
 void MorseCodeSend(char *Data);
 void MorseCodeTimerTick(void);
+void MorseCode_Stop(void);
 #endif
 
 

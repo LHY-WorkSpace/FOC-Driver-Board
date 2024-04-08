@@ -61,18 +61,22 @@ void Task()
     switch (Flag)
     {
       case 0:
-        // WS2812_SetAll(10,10,240);//蓝色
+        MorseCode_Stop();
         WS2812_BlueMode();
         break;
       case 1:
-        // WS2812_SetAll(240,50,0);//橙色
+        MorseCode_Stop();
         WS2812_OrangeMode();
         break;
       case 2:
+        MorseCode_Stop();
         WS2812_SetAll(240,0,0);//红色
         RGB_SendToLED();
-        // // MorseCode_Init();
-        // MorseCodeSend("Jack Trust Me");
+        Flag = 0xFF;
+        break;
+      case 3:
+        Delay_ms(500);
+        MorseCodeSend("Jack Trust Me");
         Flag = 0xFF;
         break;
       default:
@@ -106,6 +110,10 @@ void Task()
       {
           Flag = 2;
       }
+        else if(KeyState.KeyState == DOUBLE_CLICK)
+      {
+          Flag = 3;
+      }
 
     Time_ResetFlag(Flag_10ms);
   }
@@ -118,17 +126,18 @@ int main(void)
 {
   NVIC_PriorityGroupConfig(NVIC_PriorityGroup_4);
   Delay_Init();
-  // LED_Init();
-  // Delay_ms(500);
+  LED_Init();
+  Delay_ms(500);
   Key_Init();
   // EEPROM_Init();
   // AsciiCode_Init();
 
   // 这3个顺序不能动 外接5V注意配置为推挽模式！
   WS2812_Init();
-  // MorseCode_Init();
+  MorseCode_Init();
   TIM3_Init(10,72);
-
+  WS2812_SetAll(0,0,0);//白的
+  RGB_SendToLED();
   // AS5600_Init();
   // PWM_Init();
   // USART1_Init(460800);
@@ -143,8 +152,8 @@ int main(void)
 
       // WS2812_SetColor(10,10,240,1);
       // RGB_SendToLED();
-    //   Delay_ms(500);
-	  Task();
+      // Delay_ms(500);
+      Task();
       // WS2812_SetColor(240,50,0,1);
       // RGB_SendToLED();
       	// MorseCodeSend("Jack Trust Me");

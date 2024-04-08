@@ -126,7 +126,7 @@ void TIM3_IRQHandler(void) // TIM3ÖÐ¶Ï
 		TIM_ClearITPendingBit(TIM3, TIM_IT_Update);
 
 		// AsciiCodeTimerTick();
-		// MorseCodeTimerTick();
+		MorseCodeTimerTick();
 		button_ticks();
 
 		if (Count >= MAX_VAL)

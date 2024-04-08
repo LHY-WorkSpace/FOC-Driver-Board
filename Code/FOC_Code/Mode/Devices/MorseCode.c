@@ -79,9 +79,18 @@ void MorseCode_Init(void)
 {
 	BufCnt = 0;
 	TotalData = 0;
-	MorseCodeSend("Jack Trust Me");
+	// MorseCodeSend("Jack Trust Me");
 	// MorseCodeSend("JACK TRUST ME");
 }
+
+
+
+void MorseCode_Stop()
+{
+	BufCnt = 0;
+	TotalData = 0;
+}
+
 
 
 static void MorseCodeSet_High()
@@ -107,7 +116,7 @@ void MorseCodeSend(char *Data)
 	if(TotalData == 0)
 	{
 		Length = strlen(Data);
-		for ( i = 0; i < TotalData; i++)
+		for ( i = 0; i < Length; i++)
 		{
 			if( ( '0' <= (*Data)) && ((*Data) <= '9') )
 			{
