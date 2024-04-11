@@ -136,7 +136,7 @@ int main(void)
   WS2812_Init();
   MorseCode_Init();
   TIM3_Init(10,72);
-  WS2812_SetAll(0,0,0);//°×µÄ
+  WS2812_SetAll(240,50,0);//°×µÄ
   RGB_SendToLED();
   // AS5600_Init();
   // PWM_Init();

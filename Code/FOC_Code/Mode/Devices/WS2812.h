@@ -3,7 +3,7 @@
 
 
 
-#define  WS2812_NUM     (1)
+#define  WS2812_NUM     (9)
 
 
 void  WS2812_Init(void);
