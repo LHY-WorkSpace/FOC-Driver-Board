@@ -195,26 +195,21 @@ uint8_t read_button_GPIO(uint8_t button_id)
 	}
 }
 
-// void PRESS_DOWN_Handler(void *Data)
-// {
-//     struct Button *Tmp;
+void PRESS_DOWN_Handler(void *Data)
+{
+    struct Button *Tmp;
 
-//     Tmp = (struct Button *)Data;
+    Tmp = (struct Button *)Data;
 
-//     switch (Tmp->button_id)
-//     {
-//         case Key_Up:
-//             break;
-//         case Key_Down:
-//             break;
-//         case Key_Left:
-//             break;
-//         case Key_Right:
-//             break;
-//         default:
-//             break;
-//     }
-// }
+    switch (Tmp->button_id)
+    {
+        case Key_Up:
+			KeyState[Key_Up] = PRESS_DOWN;
+            break;
+        default:
+            break;
+    }
+}
 
 
 // void PRESS_UP_Handler(void *Data)
@@ -266,15 +261,6 @@ void SINGLE_Click_Handler(void *Data)
         case Key_Up:
 			KeyState[Key_Up] = SINGLE_CLICK;
             break;
-        case Key_Down:
-			KeyState[Key_Down] = SINGLE_CLICK;
-            break;
-        case Key_Left:
-			KeyState[Key_Left] = SINGLE_CLICK;
-            break;
-        case Key_Right:
-			KeyState[Key_Right] = SINGLE_CLICK;
-            break;
         default:
             break;
     }
@@ -288,15 +274,6 @@ void DOUBLE_Click_Handler(void *Data)
     {
         case Key_Up:
 			KeyState[Key_Up] = DOUBLE_CLICK;
-            break;
-        case Key_Down:
-			KeyState[Key_Down] = DOUBLE_CLICK;
-            break;
-        case Key_Left:
-			KeyState[Key_Left] = DOUBLE_CLICK;
-            break;
-        case Key_Right:
-			KeyState[Key_Right] = DOUBLE_CLICK;
             break;
         default:
             break;
@@ -331,15 +308,6 @@ void LONG_PRESS_HOLD_Handler(void *Data)
         case Key_Up:
 			KeyState[Key_Up] = LONG_PRESS_HOLD;
             break;
-        case Key_Down:
-			KeyState[Key_Down] = LONG_PRESS_HOLD;
-            break;
-        case Key_Left:
-			KeyState[Key_Left] = LONG_PRESS_HOLD;
-            break;
-        case Key_Right:
-			KeyState[Key_Right] = LONG_PRESS_HOLD;
-            break;
         default:
             break;
     }
@@ -352,10 +320,10 @@ void Key_IO_Init()
 	GPIO_InitTypeDef GPIO_Initstructure;
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB,ENABLE);
 	
-	GPIO_Initstructure.GPIO_Pin = GPIO_Pin_1;	
+	GPIO_Initstructure.GPIO_Pin = GPIO_Pin_0;	
 	GPIO_Initstructure.GPIO_Speed = GPIO_Speed_10MHz;
 	GPIO_Initstructure.GPIO_Mode = GPIO_Mode_IPU;
-	GPIO_Init(GPIOB,&GPIO_Initstructure);
+	GPIO_Init(GPIOA,&GPIO_Initstructure);
 }
 
 
@@ -371,10 +339,10 @@ void Key_Init()
     // Button_init(&Button_Right,read_button_GPIO,RESET,Key_Right);
 
 
-    // button_attach(&Button_Up, PRESS_DOWN,       PRESS_DOWN_Handler);
+    button_attach(&Button_Up, PRESS_DOWN,       PRESS_DOWN_Handler);
 	// button_attach(&Button_Up, PRESS_UP,         PRESS_UP_Handler);
 	// button_attach(&Button_Up, PRESS_REPEAT,     PRESS_REPEAT_Handler);
-	button_attach(&Button_Up, SINGLE_CLICK,     SINGLE_Click_Handler);
+	// button_attach(&Button_Up, SINGLE_CLICK,     SINGLE_Click_Handler);
 	button_attach(&Button_Up, DOUBLE_CLICK,     DOUBLE_Click_Handler);
 	// button_attach(&Button_Up, LONG_PRESS_START, LONG_PRESS_START_Handler);
 	button_attach(&Button_Up, LONG_PRESS_HOLD,  LONG_PRESS_HOLD_Handler);

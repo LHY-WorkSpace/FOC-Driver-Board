@@ -56,7 +56,7 @@ void Task()
   KeyInfo_t KeyState;
 
 
-  if(Time_GetFlag(Flag_30ms) == SET)
+  if(Time_GetFlag(Flag_20ms) == SET)
   {
     switch (Flag)
     {
@@ -88,13 +88,13 @@ void Task()
       TimeCnt--;
     }
 
-    Time_ResetFlag(Flag_30ms);
+    Time_ResetFlag(Flag_20ms);
   }
 
   if(Time_GetFlag(Flag_10ms) == SET)
   {
       KeyState = GetKeyState();
-      if(KeyState.KeyState == SINGLE_CLICK)
+      if(KeyState.KeyState == PRESS_DOWN)
       {
           if(Flag == 0)
           {
@@ -110,7 +110,7 @@ void Task()
       {
           Flag = 2;
       }
-        else if(KeyState.KeyState == DOUBLE_CLICK)
+      else if(KeyState.KeyState == DOUBLE_CLICK)
       {
           Flag = 3;
       }

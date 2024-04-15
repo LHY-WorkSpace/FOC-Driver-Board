@@ -5,7 +5,7 @@
 #include "string.h"
 
 
-#define KEY_UP        GPIO_ReadInputDataBit(GPIOB,GPIO_Pin_1)
+#define KEY_UP        GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_0)
 // #define KEY_DOWN        GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_1)
 // #define KEY_UP          GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_0)
 // #define KEY_RIGHT       GPIO_ReadInputDataBit(GPIOA,GPIO_Pin_3)
