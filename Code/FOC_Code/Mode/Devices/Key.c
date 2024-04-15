@@ -280,24 +280,19 @@ void DOUBLE_Click_Handler(void *Data)
     }
 }
 
-// void LONG_PRESS_START_Handler(void *Data)
-// {
-//     struct Button *Tmp;
-//     Tmp = (struct Button *)Data;
-//     switch (Tmp->button_id)
-//     {
-//         case Key_Up:
-//             break;
-//         case Key_Down:
-//             break;
-//         case Key_Left:
-//             break;
-//         case Key_Right:
-//             break;
-//         default:
-//             break;
-//     }
-// }
+void LONG_PRESS_START_Handler(void *Data)
+{
+    struct Button *Tmp;
+    Tmp = (struct Button *)Data;
+    switch (Tmp->button_id)
+    {
+        case Key_Up:
+			KeyState[Key_Up] = LONG_PRESS_START;
+            break;
+        default:
+            break;
+    }
+}
 
 void LONG_PRESS_HOLD_Handler(void *Data)
 {
@@ -344,8 +339,8 @@ void Key_Init()
 	// button_attach(&Button_Up, PRESS_REPEAT,     PRESS_REPEAT_Handler);
 	// button_attach(&Button_Up, SINGLE_CLICK,     SINGLE_Click_Handler);
 	button_attach(&Button_Up, DOUBLE_CLICK,     DOUBLE_Click_Handler);
-	// button_attach(&Button_Up, LONG_PRESS_START, LONG_PRESS_START_Handler);
-	button_attach(&Button_Up, LONG_PRESS_HOLD,  LONG_PRESS_HOLD_Handler);
+	button_attach(&Button_Up, LONG_PRESS_START, LONG_PRESS_START_Handler);
+	// button_attach(&Button_Up, LONG_PRESS_HOLD,  LONG_PRESS_HOLD_Handler);
 
     // button_attach(&Button_Down, PRESS_DOWN,       PRESS_DOWN_Handler);
 	// button_attach(&Button_Down, PRESS_UP,         PRESS_UP_Handler);
@@ -376,7 +371,7 @@ void Key_Init()
     // button_start(&Button_Down);
     // button_start(&Button_Left);
     // button_start(&Button_Right);
-
+	memset(&KeyState,0xff,sizeof(KeyState));
 }   
 
 

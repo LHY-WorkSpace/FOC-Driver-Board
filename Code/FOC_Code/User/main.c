@@ -52,13 +52,16 @@ void WS2812_OrangeMode()
 
 void Task()
 {
-  static u8 Flag = 0xFF;
+  static u8 Step = 0xFF;
+  static u8 ErrFlag = 0;
+
+  
   KeyInfo_t KeyState;
 
 
   if(Time_GetFlag(Flag_20ms) == SET)
   {
-    switch (Flag)
+    switch (Step)
     {
       case 0:
         MorseCode_Stop();
@@ -72,12 +75,17 @@ void Task()
         MorseCode_Stop();
         WS2812_SetAll(240,0,0);//红色
         RGB_SendToLED();
-        Flag = 0xFF;
+        Step = 0xFF;
         break;
       case 3:
         Delay_ms(500);
         MorseCodeSend("Jack Trust Me");
-        Flag = 0xFF;
+        Step = 0xFF;
+        break;
+      case 4:
+        WS2812_SetAll(0,0,0);
+        RGB_SendToLED();
+        Step = 0xFF;
         break;
       default:
       break;
@@ -96,23 +104,36 @@ void Task()
       KeyState = GetKeyState();
       if(KeyState.KeyState == PRESS_DOWN)
       {
-          if(Flag == 0)
+          if(ErrFlag != 1)
           {
-            Flag = 1;
+            if(Step == 0)
+            {
+              Step = 1;
+            }
+            else
+            {
+              Step = 0;
+            }
+              TimeCnt = 10;
           }
-          else
-          {
-            Flag = 0;
-          }
-          TimeCnt = 10;
       }
-      else if(KeyState.KeyState == LONG_PRESS_HOLD)
+      else if(KeyState.KeyState == LONG_PRESS_START)
       {
-          Flag = 2;
+        if(ErrFlag == 0)
+        {
+          Step = 2;
+          ErrFlag =1;
+        }
+        else
+        {
+          Step = 4;
+          ErrFlag =0;
+        }
+
       }
       else if(KeyState.KeyState == DOUBLE_CLICK)
       {
-          Flag = 3;
+          Step = 3;
       }
 
     Time_ResetFlag(Flag_10ms);
@@ -126,17 +147,17 @@ int main(void)
 {
   NVIC_PriorityGroupConfig(NVIC_PriorityGroup_4);
   Delay_Init();
-  LED_Init();
-  Delay_ms(500);
+  // LED_Init();
   Key_Init();
   // EEPROM_Init();
   // AsciiCode_Init();
-
+    Delay_ms(100);
   // 这3个顺序不能动 外接5V注意配置为推挽模式！
   WS2812_Init();
   MorseCode_Init();
   TIM3_Init(10,72);
-  WS2812_SetAll(240,50,0);//白的
+
+  WS2812_SetAll(0,0,0);
   RGB_SendToLED();
   // AS5600_Init();
   // PWM_Init();

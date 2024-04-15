@@ -32,7 +32,7 @@ void  WS2812_Init(void)
 	
 	//GPIO
 	GPIO_InitStructure.GPIO_Pin    = GPIO_Pin_2;
-	GPIO_InitStructure.GPIO_Mode   = GPIO_Mode_AF_PP;
+	GPIO_InitStructure.GPIO_Mode   = GPIO_Mode_AF_OD;
 	GPIO_InitStructure.GPIO_Speed  = GPIO_Speed_50MHz;
 	GPIO_Init(GPIOA, &GPIO_InitStructure);	
 	
