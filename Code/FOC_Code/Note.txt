@@ -39,6 +39,158 @@ void P_Transform(float Ia, float Ib, float Ic)
 
 }
 
+BOOL GetEventSectorInfo( WORD 单条长度, WORD 最大条数, DWORD 第几条, TEventSectorInfo *pEventSectorInfo )
+{
+	WORD 占用扇区数;			// 此OAD占用的扇区个数	
+	WORD 单个扇区存几条;		// 一个扇区能存放的OAD的条数
+	WORD twSectorOff;			// 扇区的偏移
+	WORD twInSectorOff;			// 扇区内的偏移
+	
+	
+	if( (单条长度<4) || (最大条数==0) || ( 单条长度 > EVENT_VALID_OAD单条长度) )
+	{
+
+		return FALSE;
+	}
+	else
+	{
+		// 一个扇区存的OAD的个数
+		单个扇区存几条 = SECTOR_SIZE/单条长度;
+		if( 最大条数 < 单个扇区存几条 )
+		{
+			单个扇区存几条 = 最大条数;
+		}	
+		// 此OAD占扇区个数
+		if( (最大条数%单个扇区存几条) == 0 )
+		{
+			总占用扇区数 = (最大条数/单个扇区存几条)+1;
+		}
+		else
+		{
+			总占用扇区数 = ((最大条数/单个扇区存几条)+1)+1;	// 进位加1
+		}
+		// 扇区的偏移
+		在第几个扇区 = 第几条/单个扇区存几条;
+		在总占用扇区数的第几个扇区 = 在第几个扇区%总占用扇区数;
+
+		// 扇区内的偏移
+		这一条在单个扇区的偏移 = 第几条%单个扇区存几条;
+
+		pEventSectorInfo->dwPointer = 第几条 % 最大条数;
+		pEventSectorInfo->dwSaveSpace = SECTOR_SIZE*总占用扇区数;
+		pEventSectorInfo->dwSectorAddr = (DWORD)在总占用扇区数的第几个扇区*SECTOR_SIZE+这一条在单个扇区的偏移*单条长度;	
+		
+		return TRUE;
+	}
+}
+
+https://blog.csdn.net/Xuexi_touteng/article/details/136491667
 
 
 
+
+
+
+CAN:主从
+UART:主机通信控制
+EEROM:存参数,电机零点
+AS5600:
+DRV8313 DRV8311:
+boot升级?
+电机电压ADC:控制电机使能，检测到有电压开启电机控制
+
+
+
+数据主控板：
+ESP32-S3:
+SD:存数据,升级
+CAN:连接电机,多设备通信
+CH340:下程序,通信
+ST7789:圆
+EEPROM:
+
+-------------
+| 1 2 3 4 5 |
+| 6 7 8 9 A |
+-------------
+
+1*8:VCC
+4*5:GND
+2*7:UART
+3*6:CAN
+
+
+
+电机控制板:
+
+
+
+
+//获取时钟速度
+RCC_ClocksTypeDef get_rcc_clock;
+RCC_GetClocksFreq(&get_rcc_clock);
+
+
+
+#include "driver/twai.h"
+//Configure message to transmit
+
+twai_message_t message;
+message.identifier = 0xAAAA;
+message.extd = 1;
+message.data_length_code = 4;
+for (int i = 0; i < 4; i++) {
+    message.data[i] = 0;
+}
+
+//Queue message for transmission
+if (twai_transmit(&message, pdMS_TO_TICKS(1000)) == ESP_OK) {
+    printf("Message queued for transmission\n");
+} else {
+    printf("Failed to queue message for transmission\n");
+}
+
+
+
+
+
+#include "driver/twai.h"
+//Wait for message to be received
+twai_message_t message;
+if (twai_receive(&message, pdMS_TO_TICKS(10000)) == ESP_OK) {
+    printf("Message received\n");
+} else {
+    printf("Failed to receive message\n");
+    return;
+}
+
+//Process received message
+if (message.extd) {
+    printf("Message is in Extended Format\n");
+} else {
+    printf("Message is in Standard Format\n");
+}
+printf("ID is %d\n", message.identifier);
+if (!(message.rtr)) {
+    for (int i = 0; i < message.data_length_code; i++) {
+        printf("Data byte %d = %d\n", i, message.data[i]);
+    }
+}
+
+
+
+
+
+
+#include "driver/twai.h"
+//Reconfigure alerts to detect Error Passive and Bus-Off error states
+uint32_t alerts_to_enable = TWAI_ALERT_ERR_PASS | TWAI_ALERT_BUS_OFF;
+if (twai_reconfigure_alerts(alerts_to_enable, NULL) == ESP_OK) {
+    printf("Alerts reconfigured\n");
+} else {
+    printf("Failed to reconfigure alerts");
+}
+
+//Block indefinitely until an alert occurs
+uint32_t alerts_triggered;
+twai_read_alerts(&alerts_triggered, portMAX_DELAY);

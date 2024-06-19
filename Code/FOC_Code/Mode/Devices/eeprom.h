@@ -17,6 +17,17 @@
 #define EE_IIC_SDA_STATE            GPIO_ReadInputDataBit(GPIOB,GPIO_Pin_1)
 
 // #define EEPROM_ADDR(NUMBER) ((u16)(((uint32_t)&(((EEPROM_MAP *)0)->NUMBER))&0x0000FFFF))
+#pragma pack(1)
+typedef union
+{
+    uint8_t EEPROM_MEM[1024];
+}EEPROM_MAP;
+
+#pragma pack()
+
+#define EEPROM_ADDR(NUMBER) ((uint16_t) & (((EEPROM_MAP *)0)->NUMBER))
+
+
 
 void EEPROM_Init(void);
 u8 EE_WriteData(u16 addr, u16 length, u8 *data);
