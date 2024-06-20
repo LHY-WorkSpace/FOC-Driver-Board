@@ -59,7 +59,7 @@ void Task()
   KeyInfo_t KeyState;
 
 
-  if(Time_GetFlag(Flag_20ms) == SET)
+  if(Time_GetFlag(Flag_30ms) == SET)
   {
     switch (Step)
     {
@@ -79,7 +79,7 @@ void Task()
         break;
       case 3:
         Delay_ms(500);
-        MorseCodeSend("Jack Trust Me");
+        MorseCodeSend("Pilot Trust Me");
         Step = 0xFF;
         break;
       case 4:
@@ -96,7 +96,7 @@ void Task()
       TimeCnt--;
     }
 
-    Time_ResetFlag(Flag_20ms);
+    Time_ResetFlag(Flag_30ms);
   }
 
   if(Time_GetFlag(Flag_10ms) == SET)
