@@ -120,8 +120,24 @@ EEPROM:
 3*6:CAN
 
 
-
+//EG2133参考  https://blog.csdn.net/qq_41650023/article/details/124416451
+// https://oshwhub.com/shadow27/tai-yang-neng-wu-ren-chuan
 电机控制板:
+F103
+DRV8313
+EG2133 + 1N4148W + AO3400A/AP2300(MOS) + DSK34/FR107(自举)
+AS5600
+
+TPS562200:降压
+
+
+
+电池充电IC
+CN3300
+
+
+
+
 
 
 
