@@ -7,7 +7,7 @@
 #include "u8g2_UserGUI.h"
 #include "ADC.h"
 #include "WS2812.h"
-
+#include "CAN.h"
 
 // 模式1
 // u8 RRR = 240;
@@ -142,39 +142,44 @@ void Task()
 }
 
 
-
+u8 Bufftest[5];
 int main(void)
 {
+  u8 i;
   NVIC_PriorityGroupConfig(NVIC_PriorityGroup_4);
   Delay_Init();
-  // LED_Init();
-  Key_Init();
-  // EEPROM_Init();
-  // AsciiCode_Init();
-    Delay_ms(100);
-  // 这3个顺序不能动 外接5V注意配置为推挽模式！
-  WS2812_Init();
-  MorseCode_Init();
-  TIM3_Init(10,72);
+  LED_Init();
+  // Key_Init();
+  // // EEPROM_Init();
+  // // AsciiCode_Init();
+  //   Delay_ms(100);
+  // // 这3个顺序不能动 外接5V注意配置为推挽模式！
+  // WS2812_Init();
+  // MorseCode_Init();
+  // TIM3_Init(10,72);
 
-  WS2812_SetAll(0,0,0);
-  RGB_SendToLED();
+  // WS2812_SetAll(0,0,0);
+  // RGB_SendToLED();
   // AS5600_Init();
   // PWM_Init();
   // USART1_Init(460800);
   // u8g2_Init();
 
   // AD_Init();
+  Can_Init(0,0,0,0,0);
+
 
   while (1)
   {
-    // Foc_CTL();
+    Foc_CTL();
     // u8g2_Task();
 
       // WS2812_SetColor(10,10,240,1);
       // RGB_SendToLED();
-      // Delay_ms(500);
-      Task();
+
+      // Med_Can_Send_Msg(Bufftest,5);
+      Delay_ms(500);
+      // Task();
       // WS2812_SetColor(240,50,0,1);
       // RGB_SendToLED();
       	// MorseCodeSend("Jack Trust Me");

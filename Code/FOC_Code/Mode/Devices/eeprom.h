@@ -20,7 +20,7 @@
 #pragma pack(1)
 typedef union
 {
-    uint8_t EEPROM_MEM[1024];
+    u8 EEPROM_MEM[1024];
 }EEPROM_MAP;
 
 #pragma pack()

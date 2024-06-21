@@ -10,16 +10,12 @@
 
 
 static PID_t PositionPID;
-static PID_t SpeedPID;
-static PID_t ForcePID;
 static u16  TIM_PeriodVal = 72*1000/CLK_DIV/PWM_FRQUENCE;
 
 
-#define SQRT_3      (1.7320508075f)//sqrt(3)/
-#define SQRT_3_2    (0.8660254037f)//sqrt(3)/2
-
-#define ValueLimit(Val,Min,Max) ((Val)<(Min)?(Min):((Val)>(Max)?(Max):(Val)))
-static PID_t PositionPID;
+// PWM_1:PA8-主  PB13-互补
+// PWM_2:PA9-主  PB14-互补
+// PWM_3:PA10-主 PB15-互补
 
 void PWM_Init()
 {
@@ -31,12 +27,20 @@ void PWM_Init()
 	GPIO_InitTypeDef PWM_EN;
   TIM_TimeBaseInitTypeDef TIM_TimeBaseInitsruc;
   TIM_OCInitTypeDef TIM_OCInit;
+  TIM_BDTRInitTypeDef TIM_BDTRInit;
 	
 	PWM_IO.GPIO_Pin = GPIO_Pin_8|GPIO_Pin_9|GPIO_Pin_10;	
 	PWM_IO.GPIO_Speed = GPIO_Speed_50MHz;
 	PWM_IO.GPIO_Mode = GPIO_Mode_AF_PP;
 	GPIO_Init(GPIOA,&PWM_IO);
   
+#if(PWM_CHANNEL == 6)
+	PWM_IO.GPIO_Pin = GPIO_Pin_13|GPIO_Pin_14|GPIO_Pin_15;	
+	PWM_IO.GPIO_Speed = GPIO_Speed_50MHz;
+	PWM_IO.GPIO_Mode = GPIO_Mode_AF_PP;
+	GPIO_Init(GPIOB,&PWM_IO);
+#endif
+
 	PWM_EN.GPIO_Pin = GPIO_Pin_12;	
 	PWM_EN.GPIO_Speed = GPIO_Speed_10MHz;
 	PWM_EN.GPIO_Mode = GPIO_Mode_Out_PP;
@@ -60,6 +64,7 @@ void PWM_Init()
   TIM_TimeBaseInitsruc.TIM_RepetitionCounter = 0;
   TIM_TimeBaseInit(TIM1,&TIM_TimeBaseInitsruc);
 
+#if(PWM_CHANNEL == 3)
   TIM_OCInit.TIM_OCMode = TIM_OCMode_PWM1;
   TIM_OCInit.TIM_OutputState = TIM_OutputState_Enable;
   TIM_OCInit.TIM_OutputNState = TIM_OutputNState_Disable;
@@ -68,6 +73,25 @@ void PWM_Init()
   TIM_OCInit.TIM_OCNPolarity = TIM_OCNPolarity_Low;
   TIM_OCInit.TIM_OCIdleState = TIM_OCIdleState_Reset;
   TIM_OCInit.TIM_OCNIdleState = TIM_OCNIdleState_Reset;
+#else
+  TIM_OCInit.TIM_OCMode = TIM_OCMode_PWM1;
+  TIM_OCInit.TIM_OutputState = TIM_OutputState_Enable;
+  TIM_OCInit.TIM_OutputNState = TIM_OutputNState_Enable;
+  TIM_OCInit.TIM_Pulse = 0;
+  TIM_OCInit.TIM_OCPolarity = TIM_OCPolarity_High;
+  TIM_OCInit.TIM_OCNPolarity = TIM_OCPolarity_High;//相同时为互补反相
+  TIM_OCInit.TIM_OCIdleState = TIM_OCIdleState_Reset;//死区后输出的极性
+  TIM_OCInit.TIM_OCNIdleState = TIM_OCNIdleState_Reset;//死区后输出的极性
+
+  TIM_BDTRInit.TIM_OSSRState = TIM_OSSRState_Disable;
+  TIM_BDTRInit.TIM_OSSIState = TIM_OSSIState_Disable;
+  TIM_BDTRInit.TIM_LOCKLevel = TIM_LOCKLevel_OFF;
+  TIM_BDTRInit.TIM_DeadTime = 0x40;// 每增加0x40，时间增加500ns
+  TIM_BDTRInit.TIM_Break = TIM_Break_Disable;
+  TIM_BDTRInit.TIM_BreakPolarity = TIM_BreakPolarity_High;//死区后输出的极性
+  TIM_BDTRInit.TIM_AutomaticOutput = TIM_AutomaticOutput_Enable;
+  TIM_BDTRConfig(TIM1,&TIM_BDTRInit);
+#endif
 
   TIM_OC1Init(TIM1,&TIM_OCInit);
   TIM_OC2Init(TIM1,&TIM_OCInit);
@@ -128,93 +152,6 @@ float AngleLimit(float Input)
     }
     return Tmp;
 }
-
-// =========================================================================================================================
-#define _2_SQRT3 1.15470053838f
-#define _SQRT3 1.73205080757f
-#define _1_SQRT3 0.57735026919f
-#define _SQRT3_2 0.86602540378f
-#define _SQRT2 1.41421356237f
-#define _120_D2R 2.09439510239f
-#define _PI 3.14159265359f
-#define _PI_2 1.57079632679f
-#define _PI_3 1.0471975512f
-#define _2PI 6.28318530718f
-#define _3PI_2 4.71238898038f
-#define _PI_6 0.52359877559f
-#define _RPM_TO_RADS 0.10471975512f
-// function approximating the sine calculation by using fixed size array
-// uses a 65 element lookup table and interpolation
-// thanks to @dekutree for his work on optimizing this
-float _sin(float a){
-  // 16bit integer array for sine lookup. interpolation is used for better precision
-  // 16 bit precision on sine value, 8 bit fractional value for interpolation, 6bit LUT size
-  // resulting precision compared to stdlib sine is 0.00006480 (RMS difference in range -PI,PI for 3217 steps)
-  static uint16_t sine_array[65] = {0,804,1608,2411,3212,4011,4808,5602,6393,7180,7962,8740,9512,10279,11039,11793,12540,13279,14010,14733,15447,16151,16846,17531,18205,18868,19520,20160,20788,21403,22006,22595,23170,23732,24279,24812,25330,25833,26320,26791,27246,27684,28106,28511,28899,29269,29622,29957,30274,30572,30853,31114,31357,31581,31786,31972,32138,32286,32413,32522,32610,32679,32729,32758,32768};
-  unsigned int i = (unsigned int)(a * (64*4*256.0 /_2PI));
-  int t1, t2, frac = i & 0xff;
-  i = (i >> 8) & 0xff;
-  if (i < 64) {
-    t1 = sine_array[i]; t2 = sine_array[i+1];
-  }
-  else if(i < 128) {
-    t1 = sine_array[128 - i]; t2 = sine_array[127 - i];
-  }
-  else if(i < 192) {
-    t1 = -sine_array[-128 + i]; t2 = -sine_array[-127 + i];
-  }
-  else {
-    t1 = -sine_array[256 - i]; t2 = -sine_array[255 - i];
-  }
-  return (1.0f/32768.0f) * (t1 + (((t2 - t1) * frac) >> 8));
-}
-
-// function approximating cosine calculation by using fixed size array
-// ~55us (float array)
-// ~56us (int array)
-// precision +-0.005
-// it has to receive an angle in between 0 and 2PI
-float _cos(float a){
-  float a_sin = a + _PI_2;
-  a_sin = a_sin > _2PI ? a_sin - _2PI : a_sin;
-  return _sin(a_sin);
-}
-
-
-void _sincos(float a, float* s, float* c){
-  *s = _sin(a);
-  *c = _cos(a);
-}
-
-
-// normalizing radian angle to [0,2PI]
-float _normalizeAngle(float angle)
-{
-  float a = fmod(angle, _2PI);
-  return a >= 0 ? a : (a + _2PI);
-}
-
-// Electrical angle calculation
-float _electricalAngle(float shaft_angle, int pole_pairs) {
-  return (shaft_angle * pole_pairs);
-}
-
-// square root approximation function using
-// https://reprap.org/forum/read.php?147,219210
-// https://en.wikipedia.org/wiki/Fast_inverse_square_root
-float _sqrtApprox(float number) {//low in fat
-  // float x;
-  // const float f = 1.5F; // better precision
-
-  // x = number * 0.5F;
-  float y = number;
-  long i = * ( long * ) &y;
-  i = 0x5f375a86 - ( i >> 1 );
-  y = * ( float * ) &i;
-  // y = y * ( f - ( x * y * y ) ); // better precision
-  return number * y;
-}
-
 
 void SIN_CTL(float Uq,float Ud, float angle_el) 
 {
@@ -368,10 +305,9 @@ void FocCloseLoop_Position(float Target)
   // Delay_ms(2);
 }
 
-
 void Foc_CTL()
 {
-  FocCloseLoop_Position(Tarang);
+  // FocCloseLoop_Position(Tarang);
   // FocOpenLoop_Speed(Tarang);
 }
 

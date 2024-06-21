@@ -52,13 +52,39 @@ typedef union
     u32 B32;
 }B32_B16;
 
+#define MODE_1    (0xAA)
+#define MODE_2    (0x55)//速度快，2位小数精度
+
+// 三角函数计算方式选择
+#define CALCULATE_MODE     (MODE_2)
+
 //弧度->角度
 #define RADTODEG(x) ((x) * 57.295779513082320876798154814105f)
 //角度->弧度
 #define DEGTORAD(x) ((x) * 0.01745329251994329576923690768489f)
 
+#define _2_SQRT3 1.15470053838f
+#define _SQRT3 1.73205080757f
+#define _1_SQRT3 0.57735026919f
+#define _SQRT3_2 0.86602540378f
+#define _SQRT2 1.41421356237f
+#define _120_D2R 2.09439510239f
+#define _PI 3.14159265359f
+#define _PI_2 1.57079632679f
+#define _PI_3 1.0471975512f
+#define _2PI 6.28318530718f
+#define _3PI_2 4.71238898038f
+#define _PI_6 0.52359877559f
+#define _RPM_TO_RADS 0.10471975512f
+
 float FastSin(float x);
 float FastCos(float x);
+void FastSinCos(float InVal, float* SinP, float* CosP);
+
+
+
+
+
 
 
 

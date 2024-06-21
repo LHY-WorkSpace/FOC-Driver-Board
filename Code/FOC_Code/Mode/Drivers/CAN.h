@@ -20,7 +20,10 @@
 // extern USART_Data_t USART1_Data;
 // extern USART_Data_t USART2_Data;
 
-void CAN_Init();   
+// void CAN_Init();  
+void Can_Init(u8 tsjw,u8 tbs1,u8 tbs2,u16 brp,u8 mode); 
+u8 Med_Can_Receive_Msg (u8 *buf);
+u8 Med_Can_Send_Msg (u8* msg,u8 len);
 // void USART2_Init(u32 bode,u16 DataLength,u16 StopBit,u16 Parity);
 // void USARTx_ITHandle(USART_TypeDef* USARTx,USART_Data_t *USART_Data);
 // u8 USART_ITSendData(USART_TypeDef* USARTx,USART_Data_t *USART_Data,u16 Length,u8 *Data);
