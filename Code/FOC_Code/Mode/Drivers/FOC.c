@@ -307,7 +307,7 @@ void FocCloseLoop_Position(float Target)
 
 void Foc_CTL()
 {
-  // FocCloseLoop_Position(Tarang);
+  FocCloseLoop_Position(Tarang);
   // FocOpenLoop_Speed(Tarang);
 }
 

@@ -160,13 +160,13 @@ int main(void)
 
   // WS2812_SetAll(0,0,0);
   // RGB_SendToLED();
-  // AS5600_Init();
-  // PWM_Init();
-  // USART1_Init(460800);
+  AS5600_Init();
+  PWM_Init();
+  USART1_Init(115200);
   // u8g2_Init();
 
   // AD_Init();
-  Can_Init(0,0,0,0,0);
+  // Can_Init(0,0,0,0,0);
 
 
   while (1)
@@ -178,7 +178,7 @@ int main(void)
       // RGB_SendToLED();
 
       // Med_Can_Send_Msg(Bufftest,5);
-      Delay_ms(500);
+      // Delay_ms(500);
       // Task();
       // WS2812_SetColor(240,50,0,1);
       // RGB_SendToLED();

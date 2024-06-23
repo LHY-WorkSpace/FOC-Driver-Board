@@ -2,12 +2,12 @@
 #define FOC_H
 // 满周期计数值  = 72*1000/CLK_DIV/PWM_FRQUENCE
 // 建议不低于20khz，否则电机噪声大
-#define CLK_DIV             (4)//能被72整除,
-#define PWM_FRQUENCE        (20)//Khz
+#define CLK_DIV             (2)//能被72整除,
+#define PWM_FRQUENCE        (120)//Khz
 //电机极对数
 #define POLE_PAIR	(7)
 //最大电压
-#define VCC_MOTOR	(12.0f)
+#define VCC_MOTOR	(10.0f)
 //PWM 通道数：3或6路
 #define PWM_CHANNEL      (3)
 
